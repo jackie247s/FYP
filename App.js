@@ -23,8 +23,6 @@ export default class App extends Component<{}> {
   render() {
     return (
       <Signup />
-      
-    
     );
   }
 }
@@ -66,7 +64,7 @@ const styles = StyleSheet.create({
     marginTop:10,
     marginLeft:80,
     padding: 15,
-    
+
   },
   footer: {marginTop:10}
 
