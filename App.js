@@ -25,14 +25,16 @@ export default class App extends Component<{}> {
       <Container>
         <HeaderComp headerText={'Login'} />
         <View style={{flexDirection:'row',justifyContent:'center'}}>
-          <Image style={styles.image} source={require('./src/images/logo1.png')}/>
+          <Image style={styles.image} source={require('./src/images/alfalah-logo.png')}/>
          </View> 
           <View style={{marginLeft:10,marginRight:10}}>
             <InputBox placeholderText={'Name'} />
             <InputBox placeholderText={'Email'} />
             <InputBox placeholderText={'Password'} />
           </View>
-          <ButtonComp buttonText={'SignUP'} />
+          <View style={{flexDirection:'row',justifyContent:'center'}}>
+            <ButtonComp buttonText={'SignUP'} />
+          </View>  
           <View style={styles.footer}>
             <View style={styles.textRow}>
               <Text>Already have an account?</Text>
@@ -69,8 +71,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'contain',
-    width:200,
-    height:200
+    width:170,
+    height:170
   },
   textRow: {
     flexDirection: 'row',
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 20,
-
+    marginTop:10,
     marginLeft:80,
     padding: 15,
     

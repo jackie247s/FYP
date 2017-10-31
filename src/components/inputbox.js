@@ -5,7 +5,7 @@ import { Container, Header, Content, Item, Input } from 'native-base';
 const InputBox = (props) =>{
 	return (
       <Item style={{marginTop:20}} rounded>
-            <Input placeholder={props.placeholderText}/>
+            <Input  placeholder={props.placeholderText}/>
           </Item>
 	
           
