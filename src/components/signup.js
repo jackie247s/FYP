@@ -22,10 +22,10 @@ import { Container, Header, Content, Item, Input } from 'native-base';
 const Signup = () => {
     return (
       <Container>
-        <HeaderComp headerText={'Login'} />
+        <HeaderComp headerText={'Sign Up'} />
         <View style={{flexDirection:'row',justifyContent:'center'}}>
           <Image style={styles.image} source={require('../images/alfalah-logo.png')}/>
-         </View> 
+         </View>
           <View style={{marginLeft:10,marginRight:10}}>
             <InputBox placeholderText={'Name'} />
             <InputBox placeholderText={'Email'} />
@@ -33,18 +33,18 @@ const Signup = () => {
           </View>
           <View style={{flexDirection:'row',justifyContent:'center'}}>
             <ButtonComp buttonText={'SignUP'} />
-          </View>  
+          </View>
           <View style={styles.footer}>
             <View style={styles.textRow}>
               <Text>Already have an account?</Text>
                </View>
               <Button style={styles.buttonStyle} rounded danger><Text style={{fontWeight:"bold"}}>Sign In</Text></Button>
-           
+
           </View>
 
         </Container>
-      
-    
+
+
     );
   }
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginTop:10,
     marginLeft:80,
     padding: 15,
-    
+
   },
   footer: {marginTop:10}
 
