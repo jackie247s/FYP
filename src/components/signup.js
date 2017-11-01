@@ -22,7 +22,7 @@ import { Container, Header, Content, Item, Input } from 'native-base';
 const Signup = () => {
     return (
       <Container>
-        <HeaderComp headerText={'Sign Up'} />
+        <HeaderComp headerText={'Hello World'} />
         <View style={{flexDirection:'row',justifyContent:'center'}}>
           <Image style={styles.image} source={require('../images/alfalah-logo.png')}/>
          </View>
