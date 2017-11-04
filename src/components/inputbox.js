@@ -6,10 +6,7 @@ const InputBox = (props) =>{
 	return (
       <Item style={{marginTop:20}} rounded>
             <Input  placeholder={props.placeholderText}/>
-          </Item>
-	
-          
-        
+      </Item>
     );
 }
 
