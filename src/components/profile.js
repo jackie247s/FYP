@@ -6,7 +6,11 @@ import { Header } from './header';
 const Profile = () => {
   return (
     <Container>
-      <Header headerText={'Profile'} />
+      <View>
+        <Text>Company Name</Text>
+        <Text>Category</Text>
+
+      </View>
     </Container>
   );
 };
