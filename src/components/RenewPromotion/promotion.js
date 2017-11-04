@@ -10,7 +10,7 @@ const Promotion = () => {
         <Text>30% off on deal of 2 Large Afghani Pizzas with 1.5 Liter drink</Text>
       </Body>
       <Right>
-        <Button rounded style={{ backgroundColor: '#f05921' }}>
+        <Button rounded style={{ backgroundColor: '#d9534f' }}>
           <Text style={{ color: 'black' }}>Edit</Text>
         </Button>
       </Right>
