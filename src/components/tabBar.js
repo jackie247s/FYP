@@ -7,8 +7,8 @@ const TabBar=()=> {
     return (
       <Container>
        
-        <Tabs renderTabBar={()=> <ScrollableTab />}>
-          <Tab heading={ <TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
+        <Tabs renderTabBar={()=> <ScrollableTab  />} >
+          <Tab  heading={ <TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
             <NewPromotion />
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}>
