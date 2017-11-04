@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Container } from 'native-base';
 import HeaderComp from './header';
-import ButtonComp from './button';
+import RedButton from './redbutton';
 import InputBox from './inputbox';
 import Screen from './screen';
 
@@ -21,7 +21,7 @@ class NewPromotion extends Component {
           <InputBox placeholderText={'Discount'} />
           <InputBox placeholderText={'Duration'} />
           <View style={buttonContainerStyle}>
-            <ButtonComp buttonText={'Submit'} />
+            <RedButton buttonText={'Submit'} />
           </View>
         </View>
 

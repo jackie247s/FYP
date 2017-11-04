@@ -14,7 +14,7 @@ import {
 import { Button, Container } from 'native-base';
 import HeaderComp from './header';
 import InputBox from './inputbox';
-import ButtonComp from './button';
+import RedButton from './redbutton';
 
 
 const Signup = () => {
@@ -30,7 +30,7 @@ const Signup = () => {
             <InputBox placeholderText={'Password'} />
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-            <ButtonComp buttonText={'Sign Up'} />
+            <RedButton buttonText={'Sign Up'} />
           </View>
           <View style={styles.footer}>
             <View style={styles.textRow}>
