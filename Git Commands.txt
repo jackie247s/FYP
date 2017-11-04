@@ -1,0 +1,11 @@
+To fetch and checkout Usman's code:
+ git fetch upstream
+ git checkout upstream/master
+ git checkout -b usman-changes
+
+To merge changes with my code:
+ git checkout master
+ git merge usman-changes
+
+After merging, delete branch
+ git branch -d usman-changes
