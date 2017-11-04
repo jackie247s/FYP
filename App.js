@@ -5,20 +5,8 @@
  */
 
 import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,Image
-} from 'react-native';
-import { Button} from 'native-base';
-import HeaderComp from './src/components/header';
-import InputBox from './src/components/inputbox';
-import ButtonComp from './src/components/button';
-import Signup from './src/components/signup';
+import { StyleSheet } from 'react-native';
 import TabBar from './src/components/tabBar';
-import NewPromotion from './src/components/newpromotion';
-import { Container, Header, Content, Item, Input } from 'native-base';
 
 
 export default class App extends Component<{}> {
@@ -50,24 +38,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'contain',
-    width:170,
-    height:170
+    width: 170,
+    height: 170
   },
   textRow: {
     flexDirection: 'row',
     justifyContent: 'center'
   },
    buttonStyle: {
-    backgroundColor:'#fff',
-    width:200,
+    backgroundColor: '#fff',
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
     height: 20,
-    marginTop:10,
-    marginLeft:80,
+    marginTop: 10,
+    marginLeft: 80,
     padding: 15,
 
   },
-  footer: {marginTop:10}
+  footer: {
+    marginTop: 10
+  }
 
 });

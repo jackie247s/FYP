@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Container, Header, Content, Footer, FooterTab, Button, Icon, Text,Tab,Tabs,hasTabs,TabHeading,ScrollableTab } from 'native-base';
 import Signup from './signup';
 import NewPromotion from './newpromotion';
+import Profile from './profile';
+
 const TabBar=()=> {
 
     return (
       <Container>
-       
+
         <Tabs renderTabBar={()=> <ScrollableTab />}>
           <Tab heading={ <TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
             <NewPromotion />
@@ -18,7 +20,7 @@ const TabBar=()=> {
             <Signup />
           </Tab>
            <Tab heading={ <TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
-            <Signup />
+            <Profile />
           </Tab>
         </Tabs>
       </Container>
