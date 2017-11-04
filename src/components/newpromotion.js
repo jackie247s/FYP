@@ -15,7 +15,7 @@ class NewPromotion extends Component {
         <HeaderComp headerText={'Add Promotion'} />
         <Screen>
           <InputBox placeholderText={'Product Name'} />
-          <InputBox placeholderText={'Product Description'} />
+          <InputBox style={{ height: 150, justifyContent: 'flex-start' }} placeholderText={'Product Description'} multiline />
           {/* Change to Dropdown */}
           <InputBox placeholderText={'Promotion Type'} />
           <InputBox placeholderText={'Discount'} />

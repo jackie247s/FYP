@@ -4,41 +4,41 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
-  View,Image
+  View,
+  Image
 } from 'react-native';
-import { Button } from 'native-base';
+import { Button, Container } from 'native-base';
 import HeaderComp from './header';
 import InputBox from './inputbox';
 import ButtonComp from './button';
-
-import { Container, Header, Content, Item, Input } from 'native-base';
 
 
 const Signup = () => {
     return (
       <Container>
         <HeaderComp headerText={'Sign Up'} />
-        <View style={{flexDirection:'row',justifyContent:'center'}}>
-          <Image style={styles.image} source={require('../images/alfalah-logo.png')}/>
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+          <Image style={styles.image} source={require('../images/alfalah-logo.png')} />
          </View>
-          <View style={{marginLeft:10,marginRight:10}}>
+          <View style={{ marginLeft: 10, marginRight: 10 }}>
             <InputBox placeholderText={'Name'} />
             <InputBox placeholderText={'Email'} />
             <InputBox placeholderText={'Password'} />
           </View>
-          <View style={{flexDirection:'row',justifyContent:'center'}}>
-            <ButtonComp buttonText={'SignUP'} />
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+            <ButtonComp buttonText={'Sign Up'} />
           </View>
           <View style={styles.footer}>
             <View style={styles.textRow}>
               <Text>Already have an account?</Text>
                </View>
-              <Button style={styles.buttonStyle} rounded danger><Text style={{fontWeight:"bold"}}>Sign In</Text></Button>
+              <Button style={styles.buttonStyle} rounded danger>
+                <Text style={{ fontWeight: 'bold' }} >Sign In</Text>
+              </Button>
 
           </View>
 
@@ -46,7 +46,7 @@ const Signup = () => {
 
 
     );
-  }
+  };
 
 
 const styles = StyleSheet.create({
@@ -54,25 +54,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     resizeMode: 'contain',
-    width:170,
-    height:170
+    width: 170,
+    height: 170
   },
   textRow: {
     flexDirection: 'row',
     justifyContent: 'center'
   },
    buttonStyle: {
-    backgroundColor:'#fff',
-    width:200,
+    backgroundColor: '#fff',
+    width: 200,
     justifyContent: 'center',
     alignItems: 'center',
     height: 20,
-    marginTop:10,
-    marginLeft:80,
+    marginTop: 10,
+    marginLeft: 80,
     padding: 15,
 
   },
-  footer: {marginTop:10}
+  footer: {
+    marginTop: 10
+  }
 
 });
 export default Signup;
