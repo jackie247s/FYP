@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View,Image,Text } from 'react-native';
 import { Container } from 'native-base';
 import HeaderComp from './header';
 import RedButton from './redbutton';
@@ -11,15 +11,17 @@ class NewPromotion extends Component {
     const { buttonContainerStyle } = styles;
 
     return (
-
        // <HeaderComp headerText={'Add Promotion'} />
         <View>
+        <View style={{flexDirection:'row',justifyContent:'center',marginTop:10}}>
+          <Text style={styles.TextStyle}>Add Your Products</Text>
+         </View>
           <InputBox placeholderText={'Product Name'} Icon={'md-create'} />
-          <InputBox placeholderText={'Product Description'} />
+          <InputBox placeholderText={'Product Description'}  Icon={'md-document'} />
           {/* Change to Dropdown */}
-          <InputBox placeholderText={'Promotion Type'} />
-          <InputBox placeholderText={'Discount'} />
-          <InputBox placeholderText={'Duration'} />
+          <InputBox placeholderText={'Promotion Type'}  Icon={'md-options'} />
+          <InputBox placeholderText={'Discount'}  Icon={'md-pricetag'} />
+          <InputBox placeholderText={'Duration'}  Icon={'md-calendar'}/>
           <View style={buttonContainerStyle}>
             <RedButton buttonText={'Submit'} />
           </View>
@@ -33,7 +35,16 @@ const styles = {
   buttonContainerStyle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 30
+    marginTop:30
+  },
+  image: {
+    width:120,
+    height:120
+  },
+  TextStyle:{
+    fontSize:28,
+    fontWeight:"bold",
+    color:'#d9534f'
   }
 };
 
