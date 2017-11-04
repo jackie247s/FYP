@@ -16,6 +16,7 @@ import HeaderComp from './src/components/header';
 import InputBox from './src/components/inputbox';
 import ButtonComp from './src/components/button';
 import Signup from './src/components/signup';
+import TabBar from './src/components/tabBar';
 import NewPromotion from './src/components/newpromotion';
 import { Container, Header, Content, Item, Input } from 'native-base';
 
@@ -23,7 +24,7 @@ import { Container, Header, Content, Item, Input } from 'native-base';
 export default class App extends Component<{}> {
   render() {
     return (
-      <NewPromotion />
+      <TabBar />
     );
   }
 }

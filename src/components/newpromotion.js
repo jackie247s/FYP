@@ -11,10 +11,10 @@ class NewPromotion extends Component {
     const { buttonContainerStyle } = styles;
 
     return (
-      <Container>
-        <HeaderComp headerText={'Add Promotion'} />
-        <Screen>
-          <InputBox placeholderText={'Product Name'} />
+      
+       // <HeaderComp headerText={'Add Promotion'} />
+        <View>
+          <InputBox placeholderText={'Product Name'} Icon={'md-create'} />
           <InputBox placeholderText={'Product Description'} />
           {/* Change to Dropdown */}
           <InputBox placeholderText={'Promotion Type'} />
@@ -23,8 +23,8 @@ class NewPromotion extends Component {
           <View style={buttonContainerStyle}>
             <ButtonComp buttonText={'Submit'} />
           </View>
-        </Screen>
-      </Container>
+        </View>
+     
     );
   }
 }
