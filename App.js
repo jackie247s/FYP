@@ -16,13 +16,14 @@ import HeaderComp from './src/components/header';
 import InputBox from './src/components/inputbox';
 import ButtonComp from './src/components/button';
 import Signup from './src/components/signup';
+import NewPromotion from './src/components/newpromotion';
 import { Container, Header, Content, Item, Input } from 'native-base';
 
 
 export default class App extends Component<{}> {
   render() {
     return (
-      <Signup />
+      <NewPromotion />
     );
   }
 }

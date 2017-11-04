@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
-import { Container, Header, Body,Title } from 'native-base';
+import React from 'react';
+import { Left, Header, Body, Title } from 'native-base';
 
 
-const HeaderComp = (props) =>{
-return (
-      
-        <Header>
-          
-          <Body>
-            <Title>{props.headerText}</Title>
-          </Body>
-          
-        </Header>
-      
+const HeaderComp = (props) => {
+    return (
+      <Header>
+        <Left />
+        <Body>
+          <Title>{props.headerText}</Title>
+        </Body>
+      </Header>
     );
-}
+};
 
 export default HeaderComp;

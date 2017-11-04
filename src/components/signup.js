@@ -11,7 +11,7 @@ import {
   Text,
   View,Image
 } from 'react-native';
-import { Button} from 'native-base';
+import { Button } from 'native-base';
 import HeaderComp from './header';
 import InputBox from './inputbox';
 import ButtonComp from './button';
