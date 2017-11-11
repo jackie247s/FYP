@@ -1,3 +1,6 @@
+----------------------------------------
+Getting and Merging Code from Usman
+----------------------------------------
 To fetch and checkout Usman's code:
  git fetch upstream
  git checkout upstream/master
@@ -9,3 +12,22 @@ To merge changes with my code:
 
 After merging, delete branch
  git branch -d usman-changes
+
+
+----------------------------------------
+Development/ Making Changes
+----------------------------------------
+Make a new branch from master branch:
+ git checkout -b <branchname> (Set branch name to something related to the change you are making)
+
+**Do/Make changes in new branch**
+
+After making changes and testing:
+ git checkout master
+ git merge <branchname>
+ git branch -d <branchname
+
+After merging with master: 
+ git add -A
+ git commit -m "*Message describing change*"
+ git push

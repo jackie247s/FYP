@@ -10,7 +10,12 @@
     "native-base": "^2.3.3",
     "react": "16.0.0-beta.5",
     "react-native": "0.49.5",
-    "react-native-datepicker": "^1.6.0"
+    "react-native-animatable": "^1.2.4",
+    "react-native-datepicker": "^1.6.0",
+    "react-native-display": "^1.0.8",
+    "react-native-progress": "^3.4.0",
+    "react-native-router-flux": "^4.0.0-beta.22",
+    "react-native-slider": "^0.11.0"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",

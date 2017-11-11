@@ -6,10 +6,9 @@ const width = Dimensions.get('window').width;
 const mar = width-50;
 const RedButton = (props) =>{
 	return(
-		 <Button style={styles.buttonStyle} rounded danger>
+		 <Button style={styles.buttonStyle} rounded light>
 			 <Text style={{fontSize:18,fontWeight:'bold'}}>{props.buttonText}</Text>
 		 </Button>
-
 		 );
 };
 
@@ -23,10 +22,11 @@ const styles = {
     marginTop:20,
     padding: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
-    elevation: 2,
-    position: 'relative'
+    elevation: 5,
+    position: 'relative',
+    
   }
 
 };

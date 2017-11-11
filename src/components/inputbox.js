@@ -3,9 +3,10 @@ import { Item, Input,Icon } from 'native-base';
 
 const InputBox = (props) => {
 	return (
-      <Item style={{ marginTop: 20 }} rounded>
-       <Icon style={{color:'#d9534f'}} active name={props.Icon} />
-            <Input placeholder={props.placeholderText} />
+		//#d9534f
+      <Item style={{ marginLeft:8,marginRight:8,marginTop:10}} rounded>
+       <Icon style={{color:'#fff'}} active name={props.Icon} />
+            <Input placeholder={props.placeholderText} placeholderTextColor={'#dbd8d8'} />
       </Item>
     );
 };
