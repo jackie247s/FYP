@@ -8,7 +8,7 @@ class Popup extends React.Component{
   componentDidMount() {
     setTimeout(wait,3000);
       function wait(){
-      Actions.TabBar();
+      Actions.Login();
   }
   }
 	render(){
