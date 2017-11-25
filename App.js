@@ -5,18 +5,14 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet,View,Image} from 'react-native';
+import { StyleSheet } from 'react-native';
 import Routes from './src';
 
 
 export default class App extends Component<{}> {
   render() {
     return (
-      
-      
       <Routes />
-      
-      
     );
   }
 }
