@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { Image, Dimensions } from 'react-native';
 import Display from 'react-native-display';
 import * as Animatable from 'react-native-animatable';
 import Popup from './popup';
