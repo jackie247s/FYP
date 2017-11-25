@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Container, List } from 'native-base';
+import firebase from './firebase';
 import Promotion from './RenewPromotion/promotion';
 
-const RenewPromotion = () => {
-  return (
-    <Container>
-      <List>
-        <Promotion />
-      </List>
-    </Container>
-  );
-};
+class RenewPromotion extends Component {
+  componentWillMount() {
+    
+  }
+
+  render() {
+    return (
+      <Container>
+        <List>
+          <Promotion />
+        </List>
+      </Container>
+    );
+  }
+}
 
 export default RenewPromotion;
