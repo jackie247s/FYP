@@ -14,22 +14,19 @@ class RenewPromotion extends Component {
 
   componentWillMount() {
     const promotionsRef = firebase.database().ref('promotions');
-    promotionsRef.once('value')
-      .then(this.getPromotions.bind(this));
-  }
-
-  getPromotions(snapshot) {
-    const promotionsArr = [];
-    let obj = {};
-    snapshot.forEach(childsnapshot => {
-      obj = {
-        productname: childsnapshot.val().productname,
-        productdesc: childsnapshot.val().productdesc
-      };
-      promotionsArr.push(obj);
+    promotionsRef.on('value', snapshot => {
+      const promotionsArr = [];
+      let obj = {};
+      snapshot.forEach(childsnapshot => {
+        obj = {
+          productname: childsnapshot.val().productname,
+          productdesc: childsnapshot.val().productdesc
+        };
+        promotionsArr.push(obj);
+      });
+      console.log(promotionsArr);
+      this.setState({ promotions: promotionsArr, loading: false });
     });
-    console.log(promotionsArr);
-    this.setState({ promotions: promotionsArr, loading: false });
   }
 
   renderPromotions() {
