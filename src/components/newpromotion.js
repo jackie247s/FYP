@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View,Image,Text } from 'react-native';
 import { Container } from 'native-base';
-import HeaderComp from './header';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
 import Screen from './screen';
@@ -42,11 +41,11 @@ class NewPromotion extends Component {
                         top: 4,
                         marginLeft: 15
                      },
-                    dateInput: 
+                    dateInput:
                      {
                        marginLeft: 50
                      }
-                    
+
                   }}
                   ///onDateChange={(date) => {this.setState({date: date})}}
                 />
@@ -71,7 +70,7 @@ class NewPromotion extends Component {
                   dateInput: {
                     marginLeft: 50
                   }
-                  
+
                 }}
                 ///onDateChange={(date) => {this.setState({date: date})}}
               />
