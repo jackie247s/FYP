@@ -9,8 +9,8 @@ import { StyleSheet,View,Image} from 'react-native';
 const TabBar=()=> {
 
     return (
-      
-        
+
+
         <Tabs renderTabBar={()=> <ScrollableTab />}>
           <Tab heading={ <TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
             <NewPromotion />
@@ -19,14 +19,14 @@ const TabBar=()=> {
             <Signup />
           </Tab>
           <Tab heading={ <TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}>
-            <Login />
+            <RenewPromotion />
           </Tab>
            <Tab heading={ <TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
             <Signup />
           </Tab>
         </Tabs>
-        
-      
+
+
     );
 }
 
