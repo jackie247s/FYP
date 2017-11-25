@@ -12,6 +12,7 @@ class NewPromotion extends Component {
     this.state = {
       productname: '',
       productdesc: '',
+      promotype: '',
       loading: false
     };
   }
@@ -76,8 +77,18 @@ class NewPromotion extends Component {
               onChangeText={productdesc => this.setState({ productdesc })}
             />
                 {/* Change to Dropdown */}
-            <InputBox placeholderText={'Promotion Type'} Icon={'md-options'} />
-            <InputBox placeholderText={'Discount'} Icon={'md-pricetag'} />
+            <InputBox
+              placeholderText={'Promotion Type'}
+              Icon={'md-options'}
+              value={this.state.promotype}
+              onChangeText={promotype => this.setState({ promotype })}
+            />
+            <InputBox
+              placeholderText={'Discount'}
+              Icon={'md-pricetag'}
+              value={this.state.discount}
+              onChangeText={discount => this.setState({ discount })}
+            />
             <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
             <DatePicker
               style={{ width: 300, borderWidth: 0 }}
