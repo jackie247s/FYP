@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   StyleSheet,
@@ -8,14 +7,12 @@ import {
   Dimensions,
   ActivityIndicator
 } from 'react-native';
-import InputBox from './inputbox';
-import RedButton from './redbutton';
 import { Actions } from 'react-native-router-flux';
 import { Item, Input, Icon, Button } from 'native-base';
 import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
-const mar = width-50;
+const mar = width - 50;
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -27,19 +24,6 @@ class Login extends React.Component {
       }
     };
   }
-
-   renderButton() {
-    if (this.state.visible) {
-      return (
-       <Button style={styles.buttonStyle} rounded light>
-          <ActivityIndicator size={'small'} />
-       </Button>);
-    }
-     return (
-        <Button style={styles.buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Login</Text>
-         </Button>);
-    }  
 
     handleLogin(event) {
       event.preventDefault();
@@ -57,38 +41,47 @@ class Login extends React.Component {
         alert ('Please Fill all the fields');
       }
       else if(Password == null) {
-        this.setState({ visible: false});
+        this.setState({ visible: false });
         alert('Please Fill all the fields'); }
       else {
         firebase.auth().signInWithEmailAndPassword(Email,Password).then(authData => {
-        firebase.auth().onAuthStateChanged((user)=>{
+        firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           if (user.emailVerified) {
             Actions.TabBar();
-          }
-          else {
-            errorMessage = 'Email not verified';
+          } else {
+            const errorMessage = 'Email not verified';
             Actions.Login();
-            self.setState({visible: false});
+            self.setState({ visible: false });
             alert(errorMessage);
           }
       }
-
       });
       }).catch(function(error) {
           check=false;
           errorMessage = error.message;
           alert(errorMessage);
           self.setState({visible:false});
-
       });
 }
-}      
+}
 
     MoveToSignUp() {
       Actions.Signup();
     }
-  
+
+    renderButton() {
+     if (this.state.visible) {
+       return (
+        <Button style={styles.buttonStyle} rounded light>
+           <ActivityIndicator size={'small'} />
+        </Button>);
+     }
+      return (
+         <Button style={styles.buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
+               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Login</Text>
+          </Button>);
+     }
 
   render() {
     return (
@@ -149,19 +142,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   buttonStyle: {
-    flexDirection:'row',
-    width:mar,
+    flexDirection: 'row',
+    width: mar,
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    marginTop:20,
+    marginTop: 20,
     padding: 15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
     elevation: 5,
     position: 'relative',
-    
+
   },
   SignupbuttonStyle: {
     width: 200,
