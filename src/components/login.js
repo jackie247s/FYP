@@ -5,19 +5,85 @@ import {
   Text,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from 'react-native';
 import InputBox from './inputbox';
 import RedButton from './redbutton';
 import { Actions } from 'react-native-router-flux';
 import { Item, Input, Icon, Button } from 'native-base';
+import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
 const mar = width-50;
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      visible: false,
+      Record: {
+          email: '',
+          password: ''
+      }
+    };
+  }
+
+   renderButton() {
+    if (this.state.visible) {
+      return (
+       <Button style={styles.buttonStyle} rounded light>
+          <ActivityIndicator size={'small'} />
+       </Button>);
+    }
+     return (
+        <Button style={styles.buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Login</Text>
+         </Button>);
+    }  
+
+    handleLogin(event) {
+      event.preventDefault();
+
+      const self = this;
+      const Email = this.state.email;
+      const Password = this.state.password;
+      this.setState({ visible: true });
+      if (Email == null && Password == null) {
+        this.setState({ visible: false });
+        alert('Please Fill all the fields');
+      }
+      else if (Email == null) {
+        this.setState({ visible: false });
+        alert ('Please Fill all the fields');
+      }
+      else if(Password == null) {
+        this.setState({ visible: false});
+        alert('Please Fill all the fields'); }
+      else {
+        firebase.auth().signInWithEmailAndPassword(Email,Password).then(authData => {
+        firebase.auth().onAuthStateChanged((user)=>{
+        if (user) {
+          if (user.emailVerified) {
+            Actions.TabBar();
+          }
+          else {
+            errorMessage = 'Email not verified';
+            Actions.Login();
+            self.setState({visible: false});
+            alert(errorMessage);
+          }
+      }
+
+      });
+      }).catch(function(error) {
+          check=false;
+          errorMessage = error.message;
+          alert(errorMessage);
+          self.setState({visible:false});
+
+      });
 }
+}      
 
     MoveToSignUp() {
       Actions.Signup();
@@ -33,17 +99,15 @@ class Login extends React.Component {
         <View style={{ marginLeft: 15, marginRight: 10 }}>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-              <Input placeholder='Email' placeholderTextColor={'#dbd8d8'} />
+              <Input placeholder='Email' placeholderTextColor={'#dbd8d8'} onChangeText={(email) => this.setState({email})}  />
           </Item>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-unlock'} />
-              <Input placeholder='Password' placeholderTextColor={'#dbd8d8'} />
+              <Input placeholder='Password' placeholderTextColor={'#dbd8d8'} onChangeText={(password)=>this.setState({password})}  />
           </Item>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Button style={styles.buttonStyle} rounded light>
-            <Text style={{ fontSize: 18, fontWeight: 'bold'}}>Login</Text>
-          </Button>
+         {this.renderButton()}
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
           <Button rounded transparent>

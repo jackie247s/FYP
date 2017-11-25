@@ -13,6 +13,7 @@ import {
   Dimensions
 } from 'react-native';
 import { Item, Input, Icon, Button } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
@@ -28,28 +29,35 @@ class Signup extends React.Component {
              };
       }
 
+  renderButton() {
+    <Button style={styles.SignInbuttonStyle} rounded transparent>
+        <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
+    </Button>}
+
   handleform(event) {
      event.preventDefault();
      var name = this.state.name;
      var email = this.state.email;
      var password = this.state.password;
      if (name == null && email == null && password == null)
-        this.popup.alert('Please Fill all the fields'); 
+            alert('Please Fill all the fields'); 
      else if(name == null)
-      this.popup.alert('Please Fill the Name field'); 
+            alert('Please Fill the Name field'); 
      else if(email == null)
-      this.popup.alert('Please Fill the Email field');
+            alert('Please Fill the Email field');
      else if(password == null)
-      this.popup.alert('Please Fill the Password field');
+            alert('Please Fill the Password field');
      else {
             firebase.auth().createUserWithEmailAndPassword(email, password).then((newUser)=>{
                 firebase.auth().currentUser.sendEmailVerification().then(() => {
                 
-                   firebase.database().ref('Users/').set({
+                   firebase.database().ref('merchants/').push({
                     Name: name,
                     Email:email,
                     Password:password
                   });
+                    alert('verify your email to signin to continue');
+                    Actions.Login();
                 }).catch(function (error) {
                     errorMessage = error.message;
                     alert(errorMessage);
@@ -61,6 +69,7 @@ class Signup extends React.Component {
         }   
 }
   render() {
+    console.disableYellowBox = true;
     return (
       <Image source={require('../images/bg.png')} style={styles.backgroundImage}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
