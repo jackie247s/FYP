@@ -1,30 +1,29 @@
 import React, { Component } from 'react';
-import { View,Image,Text } from 'react-native';
-import { Container } from 'native-base';
+import { View, Image, Text } from 'react-native';
+import DatePicker from 'react-native-datepicker';
+import { Container, Label } from 'native-base';
 import HeaderComp from './header';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
-import Screen from './screen';
-import DatePicker from 'react-native-datepicker'
-import {Label} from 'native-base';
+
 class NewPromotion extends Component {
   render() {
-    const { buttonContainerStyle,backgroundImage } = styles;
+    const { buttonContainerStyle, backgroundImage } = styles;
 
     return (
        // <HeaderComp headerText={'Add Promotion'} />
         <Image source={require('../images/bg.png')} style={backgroundImage}>
-            <View style={{flexDirection:'row',justifyContent:'center',marginTop:10}}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
                 <Text style={styles.TextStyle}>Add Your Products</Text>
             </View>
             <InputBox placeholderText={'Product Name'} Icon={'md-create'} />
-                <InputBox placeholderText={'Product Description'}  Icon={'md-document'} />
+                <InputBox placeholderText={'Product Description'} Icon={'md-document'} />
                 {/* Change to Dropdown */}
-                <InputBox placeholderText={'Promotion Type'}  Icon={'md-options'} />
-                <InputBox placeholderText={'Discount'}  Icon={'md-pricetag'} />
-                <Label style={{margin:5,marginLeft:50,color:'#dbd8d8'}}>Start date</Label>
+                <InputBox placeholderText={'Promotion Type'} Icon={'md-options'} />
+                <InputBox placeholderText={'Discount'} Icon={'md-pricetag'} />
+                <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
                 <DatePicker
-                  style={{width: 300,borderWidth:0}}
+                  style={{ width: 300, borderWidth: 0 }}
                   date="2016-05-15"
                   mode="date"
                   pplaceholderText="select date"
@@ -33,8 +32,7 @@ class NewPromotion extends Component {
                   maxDate="2020-06-08"
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
-                  customStyles=
-                  {{
+                  customStyles={{
                     dateIcon:
                      {
                         position: 'absolute',
@@ -42,17 +40,17 @@ class NewPromotion extends Component {
                         top: 4,
                         marginLeft: 15
                      },
-                    dateInput: 
+                    dateInput:
                      {
                        marginLeft: 50
                      }
-                    
+
                   }}
                   ///onDateChange={(date) => {this.setState({date: date})}}
                 />
-          <Label style={{margin:5,marginLeft:50,color:'#dbd8d8'}}>End date</Label>
+          <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
               <DatePicker
-                style={{width: 300,borderWidth:0}}
+                style={{ width: 300, borderWidth: 0 }}
                 date="2016-05-15"
                 mode="date"
                 pplaceholderText="select date"
@@ -71,7 +69,7 @@ class NewPromotion extends Component {
                   dateInput: {
                     marginLeft: 50
                   }
-                  
+
                 }}
                 ///onDateChange={(date) => {this.setState({date: date})}}
               />
@@ -87,21 +85,21 @@ const styles = {
   buttonContainerStyle: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop:30
+    marginTop: 30
   },
   image: {
-    width:120,
-    height:120
+    width: 120,
+    height: 120
   },
   backgroundImage: {
     flex: 1,
-    width:null,
-    height:null
+    width: null,
+    height: null
   },
-  TextStyle:{
-    fontSize:28,
-    fontWeight:"bold",
-    color:'#fff'
+  TextStyle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff'
   }
 };
 
