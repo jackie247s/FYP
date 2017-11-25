@@ -28,6 +28,7 @@ class NewPromotion extends Component {
       productdesc: '',
       loading: false
     });
+    alert('Promotion Added');
   }
 
   addPromotion() {
