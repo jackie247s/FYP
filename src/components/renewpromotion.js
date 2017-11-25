@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, List, Spinner } from 'native-base';
-import firebase from './firebase';
+import firebase from '../firebase';
 import Promotion from './RenewPromotion/promotion';
 
 class RenewPromotion extends Component {

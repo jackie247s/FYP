@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 import { Label, Spinner } from 'native-base';
 import DatePicker from 'react-native-datepicker';
-import firebase from './firebase';
+import firebase from '../firebase';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
 
