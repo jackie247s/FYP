@@ -19,6 +19,7 @@ class RenewPromotion extends Component {
       let obj = {};
       snapshot.forEach(childsnapshot => {
         obj = {
+          promoid: childsnapshot.key,
           productname: childsnapshot.val().productname,
           productdesc: childsnapshot.val().productdesc
         };
