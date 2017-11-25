@@ -1,13 +1,16 @@
 import React from 'react';
 import { ListItem, Thumbnail, Body, Text, Right, Button } from 'native-base';
 
-const Promotion = () => {
+const Promotion = ({ promotion }) => {
+  const { productname, productdesc } = promotion;
+  const thumbnail = require('../../images/afghani_tikka.png');
+
   return (
     <ListItem>
-      <Thumbnail square size={80} source={require('../../images/afghani_tikka.png')} />
+      <Thumbnail square size={80} source={thumbnail} />
       <Body>
-        <Text>Deal 1</Text>
-        <Text>30% off on deal of 2 Large Afghani Pizzas with 1.5 Liter drink</Text>
+        <Text>{productname}</Text>
+        <Text>{productdesc}</Text>
       </Body>
       <Right>
         <Button rounded style={{ backgroundColor: '#d9534f' }}>
