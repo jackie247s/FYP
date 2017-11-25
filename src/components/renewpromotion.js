@@ -21,7 +21,9 @@ class RenewPromotion extends Component {
         obj = {
           promoid: childsnapshot.key,
           productname: childsnapshot.val().productname,
-          productdesc: childsnapshot.val().productdesc
+          productdesc: childsnapshot.val().productdesc,
+          promotype: childsnapshot.val().promotype,
+          discount: childsnapshot.val().discount
         };
         promotionsArr.push(obj);
       });
