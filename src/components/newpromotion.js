@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
+import { Label, Spinner } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import firebase from './firebase';
-import { Container, Label } from 'native-base';
-import HeaderComp from './header';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
 
@@ -13,26 +12,68 @@ class NewPromotion extends Component {
     this.state = {
       productname: '',
       productdesc: '',
-      promotype: '',
-      discount: '',
+      loading: false
     };
   }
 
-  _addPromotion = () => {
+  onButtonPress() {
+    this.setState({ loading: true });
 
+    this.addPromotion();
+  }
+
+  onLoginSuccess() {
+    this.setState({
+      productname: '',
+      productdesc: '',
+      loading: false
+    });
+  }
+
+  addPromotion() {
+    const promotions = firebase.database().ref('promotions');
+    const promotion = {
+      productname: this.state.productname,
+      productdesc: this.state.productdesc
+    };
+    promotions.push(promotion)
+      .then(this.onLoginSuccess.bind(this));
+  }
+
+  renderButton() {
+    if (this.state.loading) {
+      return (
+        <Spinner />
+      );
+    }
+    return (
+      <View style={styles.buttonContainerStyle}>
+          <RedButton buttonText={'Submit'} onPress={this.onButtonPress.bind(this)} />
+      </View>
+    );
   }
 
   render() {
-    const { buttonContainerStyle, backgroundImage } = styles;
+    const { backgroundImage } = styles;
+    const bgImage = require('../images/bg.png');
 
     return (
-       // <HeaderComp headerText={'Add Promotion'} />
-        <Image source={require('../images/bg.png')} style={backgroundImage}>
+        <Image source={bgImage} style={backgroundImage}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-                <Text style={styles.TextStyle}>Add Your Products</Text>
+                <Text style={styles.TextStyle}>Add Your Promotions</Text>
             </View>
-            <InputBox placeholderText={'Product Name'} Icon={'md-create'} value={this.state.productname} onChangeText={productname => this.setState({ productname })} />
-            <InputBox placeholderText={'Product Description'} Icon={'md-document'} value={this.state.productdesc} onChangeText={productdesc => this.setState({ productdesc })} />
+            <InputBox
+              placeholderText={'Product Name'}
+              Icon={'md-create'}
+              value={this.state.productname}
+              onChangeText={productname => this.setState({ productname })}
+            />
+            <InputBox
+              placeholderText={'Product Description'}
+              Icon={'md-document'}
+              value={this.state.productdesc}
+              onChangeText={productdesc => this.setState({ productdesc })}
+            />
                 {/* Change to Dropdown */}
             <InputBox placeholderText={'Promotion Type'} Icon={'md-options'} />
             <InputBox placeholderText={'Discount'} Icon={'md-pricetag'} />
@@ -43,7 +84,7 @@ class NewPromotion extends Component {
               mode="date"
               pplaceholderText="select date"
               format="YYYY-MM-DD"
-             minDate="2017-06-08"
+              minDate="2017-06-08"
               maxDate="2020-06-08"
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
@@ -64,33 +105,31 @@ class NewPromotion extends Component {
               ///onDateChange={(date) => {this.setState({date: date})}}
             />
           <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
-              <DatePicker
-                style={{ width: 300, borderWidth: 0 }}
-                date="2016-05-15"
-                mode="date"
-                pplaceholderText="select date"
-                format="YYYY-MM-DD"
-               minDate="2017-06-08"
-                maxDate="2020-06-08"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 15
-                  },
-                  dateInput: {
-                    marginLeft: 50
-                  }
+          <DatePicker
+            style={{ width: 300, borderWidth: 0 }}
+            date="2016-05-15"
+            mode="date"
+            pplaceholderText="select date"
+            format="YYYY-MM-DD"
+            minDate="2017-06-08"
+            maxDate="2020-06-08"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            customStyles={{
+              dateIcon: {
+                position: 'absolute',
+                left: 0,
+                top: 4,
+                marginLeft: 15
+              },
+              dateInput: {
+                marginLeft: 50
+              }
 
-                }}
-                ///onDateChange={(date) => {this.setState({date: date})}}
-              />
-          <View style={buttonContainerStyle}>
-              <RedButton buttonText={'Submit'} onPress={}/>
-          </View>
+            }}
+            ///onDateChange={(date) => {this.setState({date: date})}}
+          />
+          {this.renderButton()}
         </Image>
     );
   }
