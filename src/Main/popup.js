@@ -5,10 +5,10 @@ import { Button } from 'native-base';
 
 class Popup extends React.Component {
   componentDidMount() {
-    setTimeout(wait,3000);
-      function wait(){
-      Actions.Login();
-  }
+    setTimeout(wait, 3000);
+      function wait() {
+        Actions.Login();
+      }
   }
 
 	render() {
