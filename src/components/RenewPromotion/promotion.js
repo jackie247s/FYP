@@ -6,18 +6,18 @@ class Promotion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      promoid: props.promotion.promoid,
       modalVisible: false
     };
   }
 
-  setModalVisible() {
-    this.setState({ modalVisible: true });
+  setModalVisible(visible) {
+    this.setState({ modalVisible: visible });
   }
 
   render() {
     const { promotion } = this.props;
     const { productname, productdesc } = promotion;
+    const modal = { setModalVisible: this.setModalVisible.bind(this) };
     const thumbnail = require('../../images/afghani_tikka.png');
 
     return (
@@ -31,12 +31,16 @@ class Promotion extends Component {
           <Button
             rounded
             style={{ backgroundColor: '#d9534f' }}
-            onPress={this.setModalVisible.bind(this)}
+            onPress={() => this.setModalVisible(true)}
           >
             <Text style={{ color: 'black' }}>Edit</Text>
           </Button>
         </Right>
-        <EditPromotion visible={this.state.modalVisible} />
+        <EditPromotion
+          promotion={this.props.promotion}
+          modal={modal}
+          visible={this.state.modalVisible}
+        />
       </ListItem>
     );
   }
