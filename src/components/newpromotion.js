@@ -27,6 +27,8 @@ class NewPromotion extends Component {
     this.setState({
       productname: '',
       productdesc: '',
+      promotype: '',
+      discount: '',
       loading: false
     });
     alert('Promotion Added');
@@ -36,7 +38,9 @@ class NewPromotion extends Component {
     const promotions = firebase.database().ref('promotions');
     const promotion = {
       productname: this.state.productname,
-      productdesc: this.state.productdesc
+      productdesc: this.state.productdesc,
+      promotype: this.state.promotype,
+      discount: this.state.discount
     };
     promotions.push(promotion)
       .then(this.onLoginSuccess.bind(this));
