@@ -4,70 +4,89 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
+  ScrollView,
   StyleSheet,
   Text,
   View,
   Image,
   Dimensions
 } from 'react-native';
-import { Item, Input, Icon, Button } from 'native-base';
+import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import SignUpInput from './SignUp/signupinput';
 import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
 const mar = width - 50;
 
-class Signup extends React.Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
-    Record: { name: '',
-               email: '',
-               password: '' }
-             };
+          Record: {
+            name: '',
+            location: '',
+            address: '',
+            landline: '',
+            mobile: '',
+            email: '',
+            landmark: '',
+            owner: '',
+            business: '',
+            hours: '',
+            facebook: '',
+            cnic: '',
+            turnover: ''
+          }
+        };
       }
-
-  renderButton() {
-    <Button style={styles.SignInbuttonStyle} rounded transparent>
-        <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
-    </Button>}
 
   handleform(event) {
      event.preventDefault();
-     var name = this.state.name;
-     var email = this.state.email;
-     var password = this.state.password;
+     const name = this.state.name;
+     const email = this.state.email;
+     const password = this.state.password;
+     let errorMessage = '';
      if (name == null && email == null && password == null)
-            alert('Please Fill all the fields'); 
-     else if(name == null)
-            alert('Please Fill the Name field'); 
-     else if(email == null)
+            alert('Please Fill all the fields');
+     else if (name == null)
+            alert('Please Fill the Name field');
+     else if (email == null)
             alert('Please Fill the Email field');
-     else if(password == null)
+     else if (password == null)
             alert('Please Fill the Password field');
      else {
             firebase.auth().createUserWithEmailAndPassword(email, password).then((newUser)=>{
                 firebase.auth().currentUser.sendEmailVerification().then(() => {
-                
+
                    firebase.database().ref('merchants/').push({
                     Name: name,
-                    Email:email,
-                    Password:password
+                    Email: email,
+                    Password: password
                   });
                     alert('verify your email to signin to continue');
                     Actions.Login();
-                }).catch(function (error) {
+                }).catch(error => {
                     errorMessage = error.message;
                     alert(errorMessage);
                     });
-             }).catch(function(error) {
+             }).catch(error => {
                 errorMessage = error.message;
                 alert(errorMessage);
                });
-        }   
+        }
 }
+
+renderButton() {
+  return (
+    <Button style={styles.SignInbuttonStyle} rounded transparent>
+        <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
+    </Button>
+  );
+}
+
   render() {
     console.disableYellowBox = true;
     return (
@@ -76,18 +95,84 @@ class Signup extends React.Component {
           <Image style={styles.image} source={require('../images/logo.png')} />
          </View>
           <View style={{ marginLeft: 10, marginRight: 10 }}>
-          <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-            <Icon style={{ color: '#fff' }} active name={'md-person'} />
-              <Input placeholder='Name' placeholderTextColor={'#dbd8d8'} onChangeText={(name) => this.setState({name})} />
-          </Item>
-          <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-            <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-              <Input placeholder='Email' placeholderTextColor={'#dbd8d8'} onChangeText={(email) => this.setState({email})} />
-          </Item>
-          <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-            <Icon style={{ color: '#fff' }} active name={'md-unlock'} />
-              <Input placeholder='Password' placeholderTextColor={'#dbd8d8'}  onChangeText={(password) => this.setState({password})}/>
-          </Item>
+            <SignUpInput
+              value={this.state.name}
+              placeholder='Name Of Business'
+              icon='md-person'
+              onChangeText={(name) => this.setState({ name })}
+            />
+            <SignUpInput
+              value={this.state.location}
+              placeholder='Location'
+              icon='md-person'
+              onChangeText={(location) => this.setState({ location })}
+            />
+            <SignUpInput
+              value={this.state.address}
+              placeholder='Address'
+              icon='md-person'
+              onChangeText={(address) => this.setState({ address })}
+            />
+            <SignUpInput
+              value={this.state.landline}
+              placeholder='Landline'
+              icon='md-person'
+              onChangeText={(landline) => this.setState({ landline })}
+            />
+            <SignUpInput
+              value={this.state.mobile}
+              placeholder='Mobile'
+              icon='md-person'
+              onChangeText={(mobile) => this.setState({ mobile })}
+            />
+            <SignUpInput
+              value={this.state.email}
+              placeholder='Email'
+              icon='md-mail'
+              onChangeText={(email) => this.setState({ email })}
+            />
+            <SignUpInput
+              value={this.state.landmark}
+              placeholder='Nearest Landmark'
+              icon='md-person'
+              onChangeText={(landmark) => this.setState({ landmark })}
+            />
+            <SignUpInput
+              value={this.state.owner}
+              placeholder='Owner'
+              icon='md-person'
+              onChangeText={(owner) => this.setState({ owner })}
+            />
+            <SignUpInput
+              value={this.state.business}
+              placeholder='Type of Business'
+              icon='md-person'
+              onChangeText={(business) => this.setState({ business })}
+            />
+            <SignUpInput
+              value={this.state.hours}
+              placeholder='Operating Hours'
+              icon='md-mail'
+              onChangeText={(hours) => this.setState({ hours })}
+            />
+            <SignUpInput
+              value={this.state.facebook}
+              placeholder='Facebook Page Link'
+              icon='md-mail'
+              onChangeText={(facebook) => this.setState({ facebook })}
+            />
+            <SignUpInput
+              value={this.state.cnic}
+              placeholder='NIC Number'
+              icon='md-mail'
+              onChangeText={(cnic) => this.setState({ cnic })}
+            />
+            <SignUpInput
+              value={this.state.turnover}
+              placeholder='Turnover'
+              icon='md-unlock'
+              onChangeText={(turnover) => this.setState({ turnover })}
+            />
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
             <Button style={styles.buttonStyle} rounded light onPress={this.handleform.bind(this)}>
@@ -141,7 +226,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     elevation: 5,
     position: 'relative',
-    
+
   },
    SignInbuttonStyle: {
     width: 200,
