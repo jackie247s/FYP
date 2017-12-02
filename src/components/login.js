@@ -35,16 +35,14 @@ class Login extends React.Component {
       if (Email == null && Password == null) {
         this.setState({ visible: false });
         alert('Please Fill all the fields');
-      }
-      else if (Email == null) {
+      } else if (Email == null) {
         this.setState({ visible: false });
         alert ('Please Fill all the fields');
-      }
-      else if(Password == null) {
+      } else if (Password == null) {
         this.setState({ visible: false });
-        alert('Please Fill all the fields'); }
-      else {
-        firebase.auth().signInWithEmailAndPassword(Email,Password).then(authData => {
+        alert('Please Fill all the fields');
+      } else {
+        firebase.auth().signInWithEmailAndPassword(Email, Password).then(authData => {
         firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           if (user.emailVerified) {
@@ -55,16 +53,21 @@ class Login extends React.Component {
             self.setState({ visible: false });
             alert(errorMessage);
           }
-      }
-      });
-      }).catch(function(error) {
-          check=false;
-          errorMessage = error.message;
-          alert(errorMessage);
-          self.setState({visible:false});
-      });
-}
-}
+        }
+        });
+        }).catch(error => {
+           const check = false;
+           const errorMessage = error.message;
+            alert(errorMessage);
+            self.setState({ visible: false });
+        });
+        }
+    }
+
+    forgetPassword() {
+      Actions.ForgetPassword();
+    }
+
 
     MoveToSignUp() {
       Actions.Signup();
@@ -79,42 +82,65 @@ class Login extends React.Component {
      }
       return (
          <Button style={styles.buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
-               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Login</Text>
+               <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Login</Text>
           </Button>);
      }
 
   render() {
     return (
       <Image source={require('../images/bg.png')} style={styles.backgroundImage}>
+
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
           <Image style={styles.image} source={require('../images/logo.png')} />
         </View>
+
         <View style={{ marginLeft: 15, marginRight: 10 }}>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-              <Input placeholder='Email' placeholderTextColor={'#dbd8d8'} onChangeText={(email) => this.setState({email})}  />
+              <Input
+              placeholder='Email'
+              placeholderTextColor={'#dbd8d8'}
+              onChangeText={(email) => this.setState({ email })}
+              />
           </Item>
+
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-unlock'} />
-              <Input placeholder='Password' placeholderTextColor={'#dbd8d8'} onChangeText={(password)=>this.setState({password})}  />
+              <Input
+              placeholder='Password'
+              placeholderTextColor={'#dbd8d8'}
+              onChangeText={(password) => this.setState({ password })}
+              />
           </Item>
         </View>
+
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
          {this.renderButton()}
         </View>
+
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Button rounded transparent>
-            <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 24 }} >Forget Password</Text>
+          <Button rounded transparent onPress={this.forgetPassword.bind(this)} >
+            <Text
+              style={{ fontWeight: 'bold', color: '#fff', fontSize: 24 }}
+            >
+            Forget Password
+            </Text>
           </Button>
         </View>
+
         <View style={styles.footer}>
           <View style={styles.textRow}>
             <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
           </View>
-          <Button style={styles.SignupbuttonStyle} rounded transparent  onPress={this.MoveToSignUp.bind(this)}>
+          <Button
+            style={styles.SignupbuttonStyle}
+            rounded transparent
+            onPress={this.MoveToSignUp.bind(this)}
+          >
             <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
           </Button>
         </View>
+
       </Image>
 
 
@@ -153,7 +179,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
     elevation: 5,
-    position: 'relative',
+    position: 'relative'
 
   },
   SignupbuttonStyle: {

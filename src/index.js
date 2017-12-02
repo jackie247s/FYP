@@ -3,6 +3,7 @@ import { Scene, Router } from 'react-native-router-flux';
 
 import Signup from './components/signup';
 import Login from './components/login';
+import ForgetPassword from './components/forgetPassword';
 import NewPromotion from './components/newpromotion';
 import RenewPromotion from './components/renewpromotion';
 import MainScreen from './Main';
@@ -18,6 +19,7 @@ class Routes extends Component {
 					<Scene key="Popup" component={Popup} title="Password" />
 					<Scene key="TabBar" component={TabBar} title="TabBar" hideNavBar />
 					<Scene key="Login" component={Login} title="login" hideNavBar />
+					<Scene key="ForgetPassword" component={ForgetPassword} title="ForgetPassword" hideNavBar />
 					<Scene key="Signup" component={Signup} title="Register" />
 					<Scene key="NewPromotion" component={NewPromotion} title="NewPromotion" />
 					<Scene key="RenewPromotion" component={RenewPromotion} title="RenewPromotion" />
