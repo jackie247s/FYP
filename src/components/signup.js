@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import FormInput from './Form/forminput';
+import { FormInput } from './Form';
 import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
@@ -88,7 +88,7 @@ renderButton() {
             <View style={{ marginLeft: 10, marginRight: 10 }}>
               <FormInput
                 value={this.state.name}
-                placeholder='Name Of Business'
+                placeholder='Name'
                 icon='md-person'
                 onChangeText={(name) => this.setState({ name })}
               />
@@ -107,8 +107,8 @@ renderButton() {
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
               <Button style={styles.buttonStyle} rounded light onPress={this.handleform.bind(this)}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
-            </Button>
+                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
+              </Button>
             </View>
             <View style={styles.footer}>
               <View style={styles.textRow}>
