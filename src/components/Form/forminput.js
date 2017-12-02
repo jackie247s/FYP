@@ -1,7 +1,7 @@
 import React from 'react';
 import { Item, Input, Icon } from 'native-base';
 
-const SignUpInput = (props) => {
+const FormInput = (props) => {
   const { placeholder, icon, onChangeText, value } = props;
 
   return (
@@ -17,4 +17,4 @@ const SignUpInput = (props) => {
   );
 };
 
-export default SignUpInput;
+export default FormInput;
