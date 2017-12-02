@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import SignUpInput from './SignUp/signupinput';
+import FormInput from './Form/forminput';
 import firebase from '../firebase';
 
 const width = Dimensions.get('window').width;
@@ -27,18 +27,8 @@ class Signup extends Component {
     this.state = {
           Record: {
             name: '',
-            location: '',
-            address: '',
-            landline: '',
-            mobile: '',
             email: '',
-            landmark: '',
-            owner: '',
-            business: '',
-            hours: '',
-            facebook: '',
-            cnic: '',
-            turnover: ''
+            password: ''
           }
         };
       }
@@ -91,105 +81,45 @@ renderButton() {
     console.disableYellowBox = true;
     return (
       <Image source={require('../images/bg.png')} style={styles.backgroundImage}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Image style={styles.image} source={require('../images/logo.png')} />
-         </View>
-          <View style={{ marginLeft: 10, marginRight: 10 }}>
-            <SignUpInput
-              value={this.state.name}
-              placeholder='Name Of Business'
-              icon='md-person'
-              onChangeText={(name) => this.setState({ name })}
-            />
-            <SignUpInput
-              value={this.state.location}
-              placeholder='Location'
-              icon='md-person'
-              onChangeText={(location) => this.setState({ location })}
-            />
-            <SignUpInput
-              value={this.state.address}
-              placeholder='Address'
-              icon='md-person'
-              onChangeText={(address) => this.setState({ address })}
-            />
-            <SignUpInput
-              value={this.state.landline}
-              placeholder='Landline'
-              icon='md-person'
-              onChangeText={(landline) => this.setState({ landline })}
-            />
-            <SignUpInput
-              value={this.state.mobile}
-              placeholder='Mobile'
-              icon='md-person'
-              onChangeText={(mobile) => this.setState({ mobile })}
-            />
-            <SignUpInput
-              value={this.state.email}
-              placeholder='Email'
-              icon='md-mail'
-              onChangeText={(email) => this.setState({ email })}
-            />
-            <SignUpInput
-              value={this.state.landmark}
-              placeholder='Nearest Landmark'
-              icon='md-person'
-              onChangeText={(landmark) => this.setState({ landmark })}
-            />
-            <SignUpInput
-              value={this.state.owner}
-              placeholder='Owner'
-              icon='md-person'
-              onChangeText={(owner) => this.setState({ owner })}
-            />
-            <SignUpInput
-              value={this.state.business}
-              placeholder='Type of Business'
-              icon='md-person'
-              onChangeText={(business) => this.setState({ business })}
-            />
-            <SignUpInput
-              value={this.state.hours}
-              placeholder='Operating Hours'
-              icon='md-mail'
-              onChangeText={(hours) => this.setState({ hours })}
-            />
-            <SignUpInput
-              value={this.state.facebook}
-              placeholder='Facebook Page Link'
-              icon='md-mail'
-              onChangeText={(facebook) => this.setState({ facebook })}
-            />
-            <SignUpInput
-              value={this.state.cnic}
-              placeholder='NIC Number'
-              icon='md-mail'
-              onChangeText={(cnic) => this.setState({ cnic })}
-            />
-            <SignUpInput
-              value={this.state.turnover}
-              placeholder='Turnover'
-              icon='md-unlock'
-              onChangeText={(turnover) => this.setState({ turnover })}
-            />
-          </View>
+        <ScrollView>
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-            <Button style={styles.buttonStyle} rounded light onPress={this.handleform.bind(this)}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
-          </Button>
-          </View>
-          <View style={styles.footer}>
-            <View style={styles.textRow}>
-              <Text style={{ color: '#dbd8d8' }}>Already have an account?</Text>
+            <Image style={styles.image} source={require('../images/logo.png')} />
+           </View>
+            <View style={{ marginLeft: 10, marginRight: 10 }}>
+              <FormInput
+                value={this.state.name}
+                placeholder='Name Of Business'
+                icon='md-person'
+                onChangeText={(name) => this.setState({ name })}
+              />
+              <FormInput
+                value={this.state.email}
+                placeholder='Email'
+                icon='md-mail'
+                onChangeText={(email) => this.setState({ email })}
+              />
+              <FormInput
+                value={this.state.password}
+                placeholder='Password'
+                icon='md-unlock'
+                onChangeText={(password) => this.setState({ password })}
+              />
             </View>
-            <Button style={styles.SignInbuttonStyle} rounded transparent>
-              <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+              <Button style={styles.buttonStyle} rounded light onPress={this.handleform.bind(this)}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Sign Up</Text>
             </Button>
-          </View>
+            </View>
+            <View style={styles.footer}>
+              <View style={styles.textRow}>
+                <Text style={{ color: '#dbd8d8' }}>Already have an account?</Text>
+              </View>
+              <Button style={styles.SignInbuttonStyle} rounded transparent>
+                <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
+              </Button>
+            </View>
+        </ScrollView>
       </Image>
-
-
     );
   }
 }
@@ -238,7 +168,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   footer: {
-    marginTop: 10
+    marginTop: 10,
+    paddingBottom: 30
   }
 
 });
