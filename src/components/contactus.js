@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
 import { FormInput, FormTextBox, FormButton1 } from './Form';
+import firebase from '../firebase';
 
 class ContactUs extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      userid: props.userid,
       subject: '',
       message: ''
     };
+  }
+
+  onButtonPress() {
+    // const subject = this.state.subject;
+    // const message = this.state.message;
+    //
+    // const ref = firebase().database()
   }
 
   render() {
@@ -29,7 +38,7 @@ class ContactUs extends Component {
           <View style={buttonContainerStyle}>
             <FormButton1
               buttonText="Submit"
-              onPress={() => {}}
+              onPress={this.onButtonPress.bind(this)}
             />
           </View>
         </View>
