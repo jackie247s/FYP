@@ -43,18 +43,18 @@ class Login extends React.Component {
         alert('Please Fill all the fields');
       } else {
         firebase.auth().signInWithEmailAndPassword(Email, Password).then(authData => {
-        firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          if (user.emailVerified) {
-            Actions.TabBar();
-          } else {
-            const errorMessage = 'Email not verified';
-            Actions.Login();
-            self.setState({ visible: false });
-            alert(errorMessage);
-          }
-        }
-        });
+          firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+              if (user.emailVerified) {
+                Actions.TabBar({ userid: user.uid });
+              } else {
+                const errorMessage = 'Email not verified';
+                Actions.Login();
+                self.setState({ visible: false });
+                alert(errorMessage);
+              }
+            }
+          });
         }).catch(error => {
            const check = false;
            const errorMessage = error.message;
