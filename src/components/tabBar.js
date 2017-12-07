@@ -4,6 +4,7 @@ import SignUp from './signup';
 import NewPromotion from './newpromotion';
 import RenewPromotion from './renewpromotion';
 import AcquireMerchant from './acquiremerchant';
+import ContactUs from './contactus';
 
 const TabBar = () => {
     return (
@@ -21,8 +22,11 @@ const TabBar = () => {
           >
             <RenewPromotion />
           </Tab>
-           <Tab heading={<TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
+          <Tab heading={<TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
             <AcquireMerchant />
+          </Tab>
+          <Tab heading={<TabHeading><Icon name="person" /><Text>Contact Us</Text></TabHeading>}>
+            <ContactUs />
           </Tab>
         </Tabs>
     );
