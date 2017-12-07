@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text, Tab, Tabs, TabHeading, ScrollableTab } from 'native-base';
-import Signup from './signup';
+import SignUp from './signup';
 import NewPromotion from './newpromotion';
 import RenewPromotion from './renewpromotion';
 import AcquireMerchant from './acquiremerchant';
@@ -11,10 +11,14 @@ const TabBar = () => {
           <Tab heading={<TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
             <NewPromotion />
           </Tab>
-          <Tab heading={<TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}>
-            <Signup />
+          <Tab
+            heading={<TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}
+          >
+            <SignUp />
           </Tab>
-          <Tab heading={<TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}>
+          <Tab
+            heading={<TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}
+          >
             <RenewPromotion />
           </Tab>
            <Tab heading={<TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
