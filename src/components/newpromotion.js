@@ -13,6 +13,7 @@ class NewPromotion extends Component {
       productname: '',
       productdesc: '',
       promotype: '',
+      userid: props.userid,
       loading: false
     };
   }
@@ -35,7 +36,8 @@ class NewPromotion extends Component {
   }
 
   addPromotion() {
-    const promotions = firebase.database().ref('promotions');
+    const userId = this.state.userid;
+    const promotions = firebase.database().ref('promotions/' + userId);
     const promotion = {
       productname: this.state.productname,
       productdesc: this.state.productdesc,
