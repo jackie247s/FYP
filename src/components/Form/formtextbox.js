@@ -5,7 +5,7 @@ const FormTextBox = (props) => {
   const { placeholder, icon, onChangeText, value } = props;
 
   return (
-    <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10, height: 40 }} rounded>
+    <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
       <Icon style={{ color: '#fff' }} active name={icon} />
         <Input
           value={value}
@@ -13,7 +13,6 @@ const FormTextBox = (props) => {
           placeholderTextColor={'#dbd8d8'}
           onChangeText={onChangeText}
           multiline
-          style={{ height: 40 }}
         />
     </Item>
   );
