@@ -26,7 +26,7 @@ const TabBar = (props) => {
             <AcquireMerchant userid={props.userid} />
           </Tab>
           <Tab heading={<TabHeading><Icon name="person" /><Text>Contact Us</Text></TabHeading>}>
-            <ContactUs />
+            <ContactUs userid={props.userid} />
           </Tab>
         </Tabs>
     );
