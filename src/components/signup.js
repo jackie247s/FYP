@@ -48,16 +48,16 @@ class Signup extends Component {
      else if (password == null)
             alert('Please Fill the Password field');
      else {
-            firebase.auth().createUserWithEmailAndPassword(email, password).then((newUser)=>{
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(newUser => {
                 firebase.auth().currentUser.sendEmailVerification().then(() => {
-
-                   firebase.database().ref('merchants/').push({
-                    Name: name,
-                    Email: email,
-                    Password: password
-                  });
-                    alert('verify your email to signin to continue');
-                    Actions.Login();
+                   const userInfo = {
+                      Name: name,
+                      Email: email,
+                      Password: password
+                    };
+                   firebase.database().ref('merchants/' + newUser.uid).push(userInfo);
+                  alert('verify your email to signin to continue');
+                  Actions.Login();
                 }).catch(error => {
                     errorMessage = error.message;
                     alert(errorMessage);
@@ -173,4 +173,5 @@ const styles = StyleSheet.create({
   }
 
 });
+
 export default Signup;
