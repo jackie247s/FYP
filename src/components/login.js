@@ -46,7 +46,7 @@ class Login extends React.Component {
           firebase.auth().onAuthStateChanged((user) => {
             if (user) {
               if (user.emailVerified) {
-                Actions.TabBar({ userid: user.uid });
+                Actions.TabBar({ user: user });
               } else {
                 const errorMessage = 'Email not verified';
                 Actions.Login();

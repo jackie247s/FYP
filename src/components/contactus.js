@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View } from 'react-native';
 import { FormInput, FormTextBox, FormButton1 } from './Form';
-import firebase from '../firebase';
 
 class ContactUs extends Component {
   constructor(props) {
