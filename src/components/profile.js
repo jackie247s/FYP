@@ -36,7 +36,7 @@ const styles = {
   },
   buttonContainerStyle: {
     alignItems: 'center',
-    marginTop: 5
+    marginTop: 15
   },
   buttonStyle: {
     paddingLeft: 10,
