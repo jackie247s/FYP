@@ -13,10 +13,13 @@ class ContactUs extends Component {
   }
 
   onButtonPress() {
-    // const subject = this.state.subject;
-    // const message = this.state.message;
-    //
-    // const ref = firebase().database()
+    const subject = this.state.subject;
+    const message = this.state.message;
+    this.setState({
+      subject: '',
+      message: ''
+    });
+    alert('Message sent');
   }
 
   render() {
