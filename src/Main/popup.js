@@ -1,9 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Button } from 'native-base';
 
-class Popup extends React.Component {
+class Popup extends Component {
   componentDidMount() {
     setTimeout(wait, 3000);
       function wait() {
@@ -12,13 +11,13 @@ class Popup extends React.Component {
   }
 
 	render() {
-		return (
-        <View
-          style={styles.popUpStyle}
-        >
-            <Image style={styles.image} source={require('../images/logo.png')}/>
-        </View>
-			);
+    return (
+      <View
+        style={styles.popUpStyle}
+      >
+          <Image style={styles.image} source={require('../images/logo.png')}/>
+      </View>
+    );
 	}
 }
 
