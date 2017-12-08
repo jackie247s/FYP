@@ -5,13 +5,14 @@ import NewPromotion from './newpromotion';
 import RenewPromotion from './renewpromotion';
 import Profile from './profile';
 import ContactUs from './contactus';
+import ComingSoon from './comingsoon';
 
 const TabBar = (props) => {
-    const { userid } = props.user;
+    const { uid } = props.user;
     return (
         <Tabs renderTabBar={() => <ScrollableTab />}>
           <Tab heading={<TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
-            <NewPromotion userid={userid} />
+            <NewPromotion userid={uid} />
           </Tab>
           <Tab
             heading={<TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}
@@ -21,13 +22,13 @@ const TabBar = (props) => {
           <Tab
             heading={<TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}
           >
-            <RenewPromotion userid={userid} />
+            <RenewPromotion userid={uid} />
           </Tab>
           <Tab heading={<TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
-            <Profile userid={userid} />
+            <Profile userid={uid} />
           </Tab>
           <Tab heading={<TabHeading><Icon name="person" /><Text>Contact Us</Text></TabHeading>}>
-            <ContactUs userid={userid} />
+            <ContactUs userid={uid} />
           </Tab>
         </Tabs>
     );
