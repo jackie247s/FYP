@@ -4,20 +4,22 @@ import { Thumbnail, Button } from 'native-base';
 
 class Profile extends Component {
   onButtonPress() {
-    
+
   }
 
   render() {
-    const { containerStyle } = styles;
+    const { containerStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
 
     return (
       <View style={containerStyle}>
-        <Thumbnail large source={{ uri: '../images/placeholder_profile_photo.png' }} />
-        <Text>Ali Usman</Text>
-        <Text>k142170@nu.edu.pk</Text>
-        <Button rounded light onPress={this.onButtonPress.bind(this)}>
-          <Text>Change Picture</Text>
-        </Button>
+        <Thumbnail large source={require('../images/placeholder_profile_photo.png')} />
+        <Text style={textStyle}>Ali Usman</Text>
+        <Text style={textStyle}>k142170@nu.edu.pk</Text>
+        <View style={buttonContainerStyle}>
+          <Button style={buttonStyle} rounded light onPress={this.onButtonPress.bind(this)}>
+            <Text>Change Picture</Text>
+          </Button>
+        </View>
       </View>
     );
   }
@@ -27,8 +29,18 @@ const styles = {
   containerStyle: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center',
-    marginTop: 20
+    marginTop: 15
+  },
+  textStyle: {
+    marginTop: 5
+  },
+  buttonContainerStyle: {
+    alignItems: 'center',
+    marginTop: 5
+  },
+  buttonStyle: {
+    paddingLeft: 10,
+    paddingRight: 10
   }
 };
 
