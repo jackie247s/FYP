@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { View, Image, ScrollView } from 'react-native';
+import firebase from '../firebase';
 import { FormInput, FormButton1 } from './Form';
 
 class AcquireMerchant extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
+      userid: props.user.uid,
       businessname: '',
       location: '',
       address: '',
@@ -20,6 +22,28 @@ class AcquireMerchant extends Component {
       cnic: '',
       turnover: ''
     };
+  }
+
+  onButtonPress() {
+    const authorRef = firebase.database().ref('authorized_merchants/' + this.state.userid);
+    authorRef.push({ authorized: false }).then(() => {
+      alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
+      this.setState({
+        businessname: '',
+        location: '',
+        address: '',
+        landline: '',
+        mobile: '',
+        email: '',
+        landmark: '',
+        owner: '',
+        businesstype: '',
+        hours: '',
+        facebook: '',
+        cnic: '',
+        turnover: ''
+      });
+    });
   }
 
   render() {
@@ -110,6 +134,7 @@ class AcquireMerchant extends Component {
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <FormButton1
                 buttonText='Register'
+                onPress={this.onButtonPress.bind(this)}
               />
             </View>
           </View>
