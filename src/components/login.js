@@ -18,10 +18,8 @@ class Login extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      Record: {
-          email: '',
-          password: ''
-      }
+      email: '',
+      password: ''
     };
   }
 
@@ -31,23 +29,20 @@ class Login extends React.Component {
       const self = this;
       const Email = this.state.email;
       const Password = this.state.password;
+      const Auth = firebase.auth();
       this.setState({ visible: true });
-      if (Email == null && Password == null) {
-        this.setState({ visible: false });
-        alert('Please Fill all the fields');
-      } else if (Email == null) {
-        this.setState({ visible: false });
-        alert ('Please Fill all the fields');
-      } else if (Password == null) {
-        this.setState({ visible: false });
-        alert('Please Fill all the fields');
-      } else {
-        firebase.auth().signInWithEmailAndPassword(Email, Password).then(authData => {
-          firebase.auth().onAuthStateChanged((user) => {
+
+      const formValidated = this.validateForm();
+
+      if (formValidated) {
+        //Success case
+        Auth.signInWithEmailAndPassword(Email, Password).then(authData => {
+          Auth.onAuthStateChanged((user) => {
             if (user) {
               if (user.emailVerified) {
-                Actions.TabBar({ user: user });
-              } else {
+                self.routeUser(user);
+              }
+              else {
                 const errorMessage = 'Email not verified';
                 Actions.Login();
                 self.setState({ visible: false });
@@ -55,13 +50,50 @@ class Login extends React.Component {
               }
             }
           });
-        }).catch(error => {
-           const check = false;
-           const errorMessage = error.message;
-            alert(errorMessage);
-            self.setState({ visible: false });
+        })
+        .catch(error => {
+          const errorMessage = error.message;
+          alert(errorMessage);
+          self.setState({ visible: false });
         });
+      }
+    }
+
+    //Check to see whether has submitted the form or if he is authorized or not and
+    //route him accordingly
+    routeUser(user) {
+      const authorRef = firebase.database().ref('authorized_merchants/' + user.uid);
+      authorRef.once('value', snapshot => {
+        if (snapshot.val() === null) {
+          //The user has not filled in the form
+
+          Actions.AcquireMerchant({ user });
         }
+        else {
+          // The user has filled in the form
+          // Confirm whether he is authorized
+          const children = snapshot.val();
+          const authorObject = children[Object.keys(children)[0]];
+          if (authorObject.authorized) {
+            // The user is authorized. Give him access to the core app
+            Actions.TabBar({ user });
+          }
+        }
+      });
+      this.setState({ visible: false });
+    }
+
+    validateForm() {
+      const Email = this.state.email;
+      const Password = this.state.password;
+
+      if (Email == null || Password == null) {
+        this.setState({ visible: false });
+        alert('Please Fill all the fields');
+        return false;
+      }
+
+      return true;
     }
 
     forgetPassword() {
@@ -74,48 +106,55 @@ class Login extends React.Component {
     }
 
     renderButton() {
-     if (this.state.visible) {
-       return (
-        <Button style={styles.buttonStyle} rounded light>
-           <ActivityIndicator size={'small'} />
-        </Button>);
-     }
+      const { buttonStyle } = styles;
+      if (this.state.visible) {
+        return (
+          <Button style={buttonStyle} rounded light>
+             <ActivityIndicator size={'small'} />
+          </Button>
+        );
+      }
+
       return (
-         <Button style={styles.buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
-               <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Login</Text>
-          </Button>);
+        <Button style={buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Login</Text>
+        </Button>
+      );
      }
 
   render() {
-    return (
-      <Image source={require('../images/bg.png')} style={styles.backgroundImage}>
+    const { backgroundImage, image, SignupbuttonStyle, textRow, footer } = styles;
 
+    return (
+      <Image source={require('../images/bg.png')} style={backgroundImage}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Image style={styles.image} source={require('../images/logo.png')} />
+          <Image style={image} source={require('../images/logo.png')} />
         </View>
 
         <View style={{ marginLeft: 15, marginRight: 10 }}>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-              <Input
+            <Input
+              value={this.state.email}
               placeholder='Email'
               placeholderTextColor={'#dbd8d8'}
               onChangeText={(email) => this.setState({ email })}
-              />
+            />
           </Item>
 
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-unlock'} />
-              <Input
+            <Input
+              value={this.state.password}
               placeholder='Password'
               placeholderTextColor={'#dbd8d8'}
               onChangeText={(password) => this.setState({ password })}
-              />
+            />
           </Item>
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-         {this.renderButton()}
+          {this.renderButton()}
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
@@ -128,22 +167,19 @@ class Login extends React.Component {
           </Button>
         </View>
 
-        <View style={styles.footer}>
-          <View style={styles.textRow}>
+        <View style={footer}>
+          <View style={textRow}>
             <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
           </View>
           <Button
-            style={styles.SignupbuttonStyle}
+            style={SignupbuttonStyle}
             rounded transparent
             onPress={this.MoveToSignUp.bind(this)}
           >
             <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
           </Button>
         </View>
-
       </Image>
-
-
     );
   }
 }
@@ -196,4 +232,5 @@ const styles = StyleSheet.create({
   }
 
 });
+
 export default Login;
