@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Thumbnail, Button, Spinner } from 'native-base';
+import { Button, Spinner } from 'native-base';
 import firebase from '../firebase';
+import ProfileImage from './Profile/ProfileImage';
 
 class Profile extends Component {
   constructor(props) {
@@ -10,44 +11,77 @@ class Profile extends Component {
       userid: this.props.userid,
       name: '',
       email: '',
-      image: '../images/placeholder_profile_photo.png',
-      loading: true
+      image: '',
+      loadingInfo: true,
+      loadingImage: true
     };
   }
 
   componentWillMount() {
-    const userInfoRef = firebase.database().ref('merchants/' + this.state.userid);
-    userInfoRef.once('value', snapshot => {
-      console.log(snapshot.val());
-      const children = snapshot.val();
-      const userInfo = children[Object.keys(children)[0]];
-      console.log(userInfo);
-      const name = userInfo.Name;
-      const email = userInfo.Email;
-      const loading = false;
-      this.setState({ name, email, loading });
-    });
+    this.getUserInfo();
+    this.getProfileImage();
   }
 
   onButtonPress() {
 
   }
 
-  renderProfile() {
-    const { containerStyle, imageStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
+  getUserInfo() {
+    //Get userinfo from firebase Realtime Database
+    const userInfoRef = firebase.database().ref('merchants/' + this.state.userid);
+    userInfoRef.once('value', snapshot => {
+      const children = snapshot.val();
+      const userInfo = children[Object.keys(children)[0]];
+      const name = userInfo.Name;
+      const email = userInfo.Email;
+      this.setState({ name, email, loadingInfo: false });
+    });
+  }
 
-    if (this.state.loading) {
+  getProfileImage() {
+    this.setState({ loadingImage: true });
+
+    //Get profile image from firebase Storage
+    firebase.storage().ref('images/' + this.state.userid + '/me.jpg').getDownloadURL()
+    .then(url => {
+      this.setState({ image: url, loadingImage: false });
+    });
+  }
+
+  setProfileImage() {
+    const image = '';
+    const profileImageRef = firebase.storage().ref('images/' + this.state.userid + '/me.jpg');
+    profileImageRef.put(image)
+    .then(snapshot => { this.getProfileImage(); });
+  }
+
+  renderImage() {
+    if (this.state.loadingImage) {
+      return (
+        <View>
+          <Spinner />
+          <Text> Image Loading </Text>
+        </View>
+      );
+    }
+
+    return (
+      <ProfileImage
+        source={this.state.image}
+      />
+    );
+  }
+
+  renderProfile() {
+    const { containerStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
+
+    if (this.state.loadingInfo) {
       return <Spinner />;
     }
-    const imageUri = this.state.image;
 
     return (
       <View style={containerStyle}>
-        <Thumbnail
-          large
-          source={require(imageUri)}
-          style={imageStyle}
-        />
+        {this.renderImage()}
         <Text style={textStyle}>{this.state.name}</Text>
         <Text style={textStyle}>{this.state.email}</Text>
         <View style={buttonContainerStyle}>
@@ -76,12 +110,8 @@ const styles = {
     flex: 1,
     marginTop: 15
   },
-  imageStyle: {
-    height: 100,
-    width: 100
-  },
   textStyle: {
-    marginTop: 5
+    marginTop: 10
   },
   buttonContainerStyle: {
     alignItems: 'center',
