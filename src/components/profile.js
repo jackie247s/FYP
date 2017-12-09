@@ -48,8 +48,7 @@ class Profile extends Component {
     });
   }
 
-  setProfileImage() {
-    const image = '';
+  setProfileImage(image) {
     const profileImageRef = firebase.storage().ref('images/' + this.state.userid + '/me.jpg');
     profileImageRef.put(image)
     .then(snapshot => { this.getProfileImage(); });
