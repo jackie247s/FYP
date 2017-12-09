@@ -10,13 +10,14 @@ class Profile extends Component {
       userid: this.props.userid,
       name: '',
       email: '',
+      image: '../images/placeholder_profile_photo.png',
       loading: true
     };
   }
 
   componentWillMount() {
     const userInfoRef = firebase.database().ref('merchants/' + this.state.userid);
-    userInfoRef.on('value', snapshot => {
+    userInfoRef.once('value', snapshot => {
       console.log(snapshot.val());
       const children = snapshot.val();
       const userInfo = children[Object.keys(children)[0]];
@@ -33,15 +34,20 @@ class Profile extends Component {
   }
 
   renderProfile() {
-    const { containerStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
+    const { containerStyle, imageStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
 
     if (this.state.loading) {
       return <Spinner />;
     }
+    const imageUri = this.state.image;
 
     return (
       <View style={containerStyle}>
-        <Thumbnail large source={require('../images/placeholder_profile_photo.png')} />
+        <Thumbnail
+          large
+          source={require(imageUri)}
+          style={imageStyle}
+        />
         <Text style={textStyle}>{this.state.name}</Text>
         <Text style={textStyle}>{this.state.email}</Text>
         <View style={buttonContainerStyle}>
@@ -69,6 +75,10 @@ const styles = {
     alignItems: 'center',
     flex: 1,
     marginTop: 15
+  },
+  imageStyle: {
+    height: 100,
+    width: 100
   },
   textStyle: {
     marginTop: 5
