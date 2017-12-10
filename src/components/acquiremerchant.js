@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, ScrollView } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import firebase from '../firebase';
 import { FormInput, FormButton1 } from './Form';
 
@@ -28,21 +29,7 @@ class AcquireMerchant extends Component {
     const authorRef = firebase.database().ref('authorized_merchants/' + this.state.userid);
     authorRef.push({ authorized: false }).then(() => {
       alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
-      this.setState({
-        businessname: '',
-        location: '',
-        address: '',
-        landline: '',
-        mobile: '',
-        email: '',
-        landmark: '',
-        owner: '',
-        businesstype: '',
-        hours: '',
-        facebook: '',
-        cnic: '',
-        turnover: ''
-      });
+      Actions.PleaseWait();
     });
   }
 
