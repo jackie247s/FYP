@@ -13,6 +13,8 @@ class NewPromotion extends Component {
       productname: '',
       productdesc: '',
       promotype: '',
+      startdate: '2017-12-10',
+      enddate: '2017-12-10',
       userid: props.userid,
       loading: false
     };
@@ -42,7 +44,9 @@ class NewPromotion extends Component {
       productname: this.state.productname,
       productdesc: this.state.productdesc,
       promotype: this.state.promotype,
-      discount: this.state.discount
+      discount: this.state.discount,
+      startdate: this.state.startdate,
+      enddate: this.state.enddate
     };
     promotions.push(promotion)
       .then(this.onLoginSuccess.bind(this));
@@ -98,9 +102,9 @@ class NewPromotion extends Component {
             <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
             <DatePicker
               style={{ width: 300, borderWidth: 0 }}
-              date="2016-05-15"
+              date={this.state.startdate}
               mode="date"
-              pplaceholderText="select date"
+              placeholder="Select Date"
               format="YYYY-MM-DD"
               minDate="2017-06-08"
               maxDate="2020-06-08"
@@ -120,14 +124,14 @@ class NewPromotion extends Component {
                  }
 
               }}
-              ///onDateChange={(date) => {this.setState({date: date})}}
+              onDateChange={(startdate) => { this.setState({ startdate }); }}
             />
           <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
           <DatePicker
             style={{ width: 300, borderWidth: 0 }}
-            date="2016-05-15"
+            date={this.state.enddate}
             mode="date"
-            pplaceholderText="select date"
+            placeholder="Select Date"
             format="YYYY-MM-DD"
             minDate="2017-06-08"
             maxDate="2020-06-08"
@@ -145,7 +149,7 @@ class NewPromotion extends Component {
               }
 
             }}
-            ///onDateChange={(date) => {this.setState({date: date})}}
+            onDateChange={enddate => { this.setState({ enddate }); }}
           />
           {this.renderButton()}
         </Image>
