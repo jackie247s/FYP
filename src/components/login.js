@@ -78,6 +78,10 @@ class Login extends React.Component {
             // The user is authorized. Give him access to the core app
             Actions.TabBar({ user });
           }
+          else {
+            // The user is not authorized. Show him please wait screen
+            Actions.PleaseWait();
+          }
         }
       });
       this.setState({ visible: false });
