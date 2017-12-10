@@ -7,6 +7,7 @@ import ForgetPassword from './components/forgetPassword';
 import NewPromotion from './components/newpromotion';
 import RenewPromotion from './components/renewpromotion';
 import AcquireMerchant from './components/acquiremerchant';
+import PleaseWait from './components/pleasewait';
 import MainScreen from './Main';
 import Popup from './Main/popup';
 import TabBar from './components/tabBar';
@@ -27,6 +28,7 @@ class Routes extends Component {
 					<Scene key="NewPromotion" component={NewPromotion} title="NewPromotion" />
 					<Scene key="RenewPromotion" component={RenewPromotion} title="RenewPromotion" />
 					<Scene key="AcquireMerchant" component={AcquireMerchant} title="AcquireMerchant" />
+					<Scene key="PleaseWait" component={PleaseWait} title="PleasWait" />
         </Scene>
       </Router>
     );
