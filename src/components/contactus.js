@@ -23,16 +23,21 @@ class ContactUs extends Component {
   }
 
   render() {
-    const { backgroundStyle, containerStyle, buttonContainerStyle } = styles;
+    const { backgroundStyle, containerStyle, logoContainerStyle, logoStyle, buttonContainerStyle } = styles;
     return (
       <Image source={require('../images/bg.png')} style={backgroundStyle} >
         <View style={containerStyle}>
+          <View style={logoContainerStyle}>
+            <Image source={require('../images/logo.png')} style={logoStyle} />
+          </View>
           <FormInput
+            icon="md-help"
             value={this.state.subject}
             placeholder="Subject"
             onChangeText={subject => this.setState({ subject })}
           />
           <FormTextBox
+            icon="md-mail"
             value={this.state.message}
             placeholder="Message"
             onChangeText={message => this.setState({ message })}
@@ -57,6 +62,14 @@ const styles = {
   },
   containerStyle: {
     marginTop: 30
+  },
+  logoContainerStyle: {
+    alignItems: 'center'
+  },
+  logoStyle: {
+    height: 200,
+    width: 200,
+    resizeMode: 'contain'
   },
   buttonContainerStyle: {
     flexDirection: 'row',
