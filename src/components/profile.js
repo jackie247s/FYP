@@ -41,11 +41,19 @@ class Profile extends Component {
   getProfileImage() {
     this.setState({ loadingImage: true });
 
-    //Get profile image from firebase Storage
-    firebase.storage().ref('images/' + this.state.userid + '/me.jpg').getDownloadURL()
-    .then(url => {
-      this.setState({ image: url, loadingImage: false });
-    });
+    const onResolve = (foundURL) => {
+      this.setState({ image: foundURL, loadingImage: false });
+    };
+
+    const onReject = (error) => {
+      firebase.storage().ref('images/placeholder_profile_photo.png').getDownloadURL()
+      .then(url => {
+        this.setState({ image: url, loadingImage: false });
+      });
+    };
+
+    firebase.storage().ref('image/' + this.state.userid + '/me.jpg').getDownloadURL()
+    .then(onResolve, onReject);
   }
 
   setProfileImage(image) {
@@ -72,7 +80,13 @@ class Profile extends Component {
   }
 
   renderProfile() {
-    const { containerStyle, textStyle, buttonContainerStyle, buttonStyle } = styles;
+    const {
+      containerStyle,
+      imageContainerStyle,
+      textStyle,
+      buttonContainerStyle,
+      buttonStyle
+    } = styles;
 
     if (this.state.loadingInfo) {
       return <Spinner />;
@@ -80,7 +94,9 @@ class Profile extends Component {
 
     return (
       <View style={containerStyle}>
-        {this.renderImage()}
+        <View style={imageContainerStyle}>
+          {this.renderImage()}
+        </View>
         <Text style={textStyle}>{this.state.name}</Text>
         <Text style={textStyle}>{this.state.email}</Text>
         <View style={buttonContainerStyle}>
@@ -108,6 +124,9 @@ const styles = {
     alignItems: 'center',
     flex: 1,
     marginTop: 15
+  },
+  imageContainerStyle: {
+    marginBottom: 10
   },
   textStyle: {
     marginTop: 10
