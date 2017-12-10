@@ -67,7 +67,7 @@ class Login extends React.Component {
         if (snapshot.val() === null) {
           //The user has not filled in the form
 
-          Actions.AcquireMerchant({ user });
+          Actions.TermsConditions({ user });
         }
         else {
           // The user has filled in the form
