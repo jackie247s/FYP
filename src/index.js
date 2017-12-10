@@ -4,10 +4,9 @@ import { Scene, Router } from 'react-native-router-flux';
 import Signup from './components/signup';
 import Login from './components/login';
 import ForgetPassword from './components/forgetPassword';
-import NewPromotion from './components/newpromotion';
-import RenewPromotion from './components/renewpromotion';
 import AcquireMerchant from './components/acquiremerchant';
 import PleaseWait from './components/pleasewait';
+import TermsConditions from './components/termsconditions';
 import MainScreen from './Main';
 import Popup from './Main/popup';
 import TabBar from './components/tabBar';
@@ -25,10 +24,9 @@ class Routes extends Component {
 						key="ForgetPassword" component={ForgetPassword} title="ForgetPassword" hideNavBar
 					/>
 					<Scene key="Signup" component={Signup} title="Register" />
-					<Scene key="NewPromotion" component={NewPromotion} title="NewPromotion" />
-					<Scene key="RenewPromotion" component={RenewPromotion} title="RenewPromotion" />
 					<Scene key="AcquireMerchant" component={AcquireMerchant} title="AcquireMerchant" />
-					<Scene key="PleaseWait" component={PleaseWait} title="PleasWait" />
+					<Scene key="PleaseWait" component={PleaseWait} title="PleaseWait" />
+					<Scene key="TermsConditions" component={TermsConditions} title="TermsConditions" />
         </Scene>
       </Router>
     );
