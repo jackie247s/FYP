@@ -8,8 +8,9 @@ import {
   ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { Item, Input, Icon, Button } from 'native-base';
+import { Button } from 'native-base';
 import firebase from '../firebase';
+import { FormInput } from './Form';
 
 const width = Dimensions.get('window').width;
 const mar = width - 50;
@@ -59,8 +60,8 @@ class Login extends React.Component {
       }
     }
 
-    //Check to see whether has submitted the form or if he is authorized or not and
-    //route him accordingly
+    //Check to see whether the user has submitted the form or whether they are authorized or not and
+    //route them accordingly
     routeUser(user) {
       const authorRef = firebase.database().ref('authorized_merchants/' + user.uid);
       authorRef.once('value', snapshot => {
@@ -136,25 +137,19 @@ class Login extends React.Component {
         </View>
 
         <View style={{ marginLeft: 15, marginRight: 10 }}>
-          <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-            <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-            <Input
-              value={this.state.email}
-              placeholder='Email'
-              placeholderTextColor={'#dbd8d8'}
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </Item>
-
-          <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-            <Icon style={{ color: '#fff' }} active name={'md-unlock'} />
-            <Input
-              value={this.state.password}
-              placeholder='Password'
-              placeholderTextColor={'#dbd8d8'}
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </Item>
+          <FormInput
+            value={this.state.email}
+            placeholder='Email'
+            icon='md-mail'
+            onChangeText={(email) => this.setState({ email })}
+          />
+          <FormInput
+            value={this.state.password}
+            placeholder='Password'
+            icon='md-unlock'
+            secureTextEntry
+            onChangeText={(password) => this.setState({ password })}
+          />
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
