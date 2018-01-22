@@ -102,6 +102,7 @@ renderButton() {
                 value={this.state.password}
                 placeholder='Password'
                 icon='md-unlock'
+                secureTextEntry
                 onChangeText={(password) => this.setState({ password })}
               />
             </View>
