@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Button } from 'native-base';
+import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import firebase from '../firebase';
 import { FormInput } from './Form';
 
@@ -132,52 +133,54 @@ class Login extends React.Component {
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Image style={image} source={require('../images/logo.png')} />
-        </View>
-
-        <View style={{ marginLeft: 15, marginRight: 10 }}>
-          <FormInput
-            value={this.state.email}
-            placeholder='Email'
-            icon='md-mail'
-            onChangeText={(email) => this.setState({ email })}
-          />
-          <FormInput
-            value={this.state.password}
-            placeholder='Password'
-            icon='md-unlock'
-            secureTextEntry
-            onChangeText={(password) => this.setState({ password })}
-          />
-        </View>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          {this.renderButton()}
-        </View>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
-          <Button rounded transparent onPress={this.forgetPassword.bind(this)} >
-            <Text
-              style={{ fontWeight: 'bold', color: '#fff', fontSize: 24 }}
-            >
-            Forget Password
-            </Text>
-          </Button>
-        </View>
-
-        <View style={footer}>
-          <View style={textRow}>
-            <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
+        <RkAvoidKeyboard>
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+            <Image style={image} source={require('../images/logo.png')} />
           </View>
-          <Button
-            style={SignupbuttonStyle}
-            rounded transparent
-            onPress={this.MoveToSignUp.bind(this)}
-          >
-            <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
-          </Button>
-        </View>
+
+          <View style={{ marginLeft: 15, marginRight: 10 }}>
+            <FormInput
+              value={this.state.email}
+              placeholder='Email'
+              icon='md-mail'
+              onChangeText={(email) => this.setState({ email })}
+            />
+            <FormInput
+              value={this.state.password}
+              placeholder='Password'
+              icon='md-unlock'
+              secureTextEntry
+              onChangeText={(password) => this.setState({ password })}
+            />
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+            {this.renderButton()}
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+            <Button rounded transparent onPress={this.forgetPassword.bind(this)} >
+              <Text
+                style={{ fontWeight: 'bold', color: '#fff', fontSize: 24 }}
+              >
+              Forget Password
+              </Text>
+            </Button>
+          </View>
+
+          <View style={footer}>
+            <View style={textRow}>
+              <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
+            </View>
+            <Button
+              style={SignupbuttonStyle}
+              rounded transparent
+              onPress={this.MoveToSignUp.bind(this)}
+            >
+              <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
+            </Button>
+          </View>
+        </RkAvoidKeyboard>
       </Image>
     );
   }
