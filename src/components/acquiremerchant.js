@@ -27,12 +27,31 @@ class AcquireMerchant extends Component {
   }
 
   onButtonPress() {
-    this.pushMerchantData();
-    const authorRef = firebase.database().ref('authorized_merchants/' + this.state.userid);
-    authorRef.push({ authorized: false }).then(() => {
-      alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
-      Actions.PleaseWait();
-    });
+    if (this.validateForm()) {
+      this.pushMerchantData();
+      const authorRef = firebase.database().ref('authorized_merchants/' + this.state.userid);
+      authorRef.push({ authorized: false }).then(() => {
+        alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
+        Actions.PleaseWait();
+      });
+    }
+  }
+
+  validateForm() {
+    return !(this.checkIfFieldEmpty());
+  }
+
+  checkIfFieldEmpty() {
+    const entries = Object.entries(this.state);
+    for (let i = 0; i < entries.length; i++) {
+      const prop = entries[i][1];
+      console.log(prop);
+      if (prop === '') {
+        alert('Please fill out all the fields');
+        return true;
+      }
+    }
+    return false;
   }
 
   pushMerchantData() {
