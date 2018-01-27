@@ -5,6 +5,7 @@ import DatePicker from 'react-native-datepicker';
 import firebase from '../firebase';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
+import { FormValidator } from './Form';
 
 class NewPromotion extends Component {
   constructor(props) {
@@ -21,9 +22,9 @@ class NewPromotion extends Component {
   }
 
   onButtonPress() {
-    this.setState({ loading: true });
-
-    this.addPromotion();
+    if (this.validateForm()) {
+      this.addPromotion();
+    }
   }
 
   onLoginSuccess() {
@@ -38,8 +39,10 @@ class NewPromotion extends Component {
   }
 
   addPromotion() {
+    this.setState({ loading: true });
+
     const userId = this.state.userid;
-    const promotions = firebase.database().ref('promotions/' + userId);
+    const promotions = firebase.database().ref(`promotions/${userId}`);
     const promotion = {
       productname: this.state.productname,
       productdesc: this.state.productdesc,
@@ -50,6 +53,10 @@ class NewPromotion extends Component {
     };
     promotions.push(promotion)
       .then(this.onLoginSuccess.bind(this));
+  }
+
+  validateForm() {
+    return !FormValidator.checkIfFieldEmpty.call(this);
   }
 
   renderButton() {

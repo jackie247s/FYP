@@ -6,6 +6,7 @@ import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import InputBox from '../inputbox';
 import RedButton from '../redbutton';
 import firebase from '../../firebase';
+import { FormValidator } from '../Form';
 
 class EditPromotion extends Component {
   constructor(props) {
@@ -20,7 +21,31 @@ class EditPromotion extends Component {
     };
   }
 
+  onButtonPress() {
+    if (this.validateForm()) {
+      this.updatePromotion();
+    }
+  }
+
+  validateForm() {
+    return !FormValidator.checkIfFieldEmpty.call(this);
+  }
+
   updatePromotion() {
+    // const promotion = firebase.database().ref('promotions');
+    // const promoid = this.state.promoid;
+    // const newpromo = {
+    //   productname: this.state.productname,
+    //   productdesc: this.state.productdesc,
+    //   promotype: this.state.promotype,
+    //   discount: this.state.discount
+    // };
+    // const updates = {};
+    // updates[promoid] = newpromo;
+    // promotion.update(updates);
+
+    const { modal } = this.props;
+
     const promotion = firebase.database().ref('promotions');
     const promoid = this.state.promoid;
     const newpromo = {
@@ -32,6 +57,7 @@ class EditPromotion extends Component {
     const updates = {};
     updates[promoid] = newpromo;
     promotion.update(updates);
+    modal.setModalVisible(false);
   }
 
   render() {
@@ -43,7 +69,10 @@ class EditPromotion extends Component {
           animationType="slide"
           transparent={false}
           visible={visible}
-          onRequestClose={() => alert('Modal has been closed.')}
+          onRequestClose={() => {
+            alert('Modal has been closed.');
+            modal.setModalVisible(false);
+          }}
         >
           <RkAvoidKeyboard>
             <InputBox
@@ -125,20 +154,7 @@ class EditPromotion extends Component {
             <View style={styles.buttonContainerStyle}>
                 <RedButton
                   buttonText={'Submit'}
-                  onPress={() => {
-                    const promotion = firebase.database().ref('promotions');
-                    const promoid = this.state.promoid;
-                    const newpromo = {
-                      productname: this.state.productname,
-                      productdesc: this.state.productdesc,
-                      promotype: this.state.promotype,
-                      discount: this.state.discount
-                    };
-                    const updates = {};
-                    updates[promoid] = newpromo;
-                    promotion.update(updates);
-                    modal.setModalVisible(false);
-                  }}
+                  onPress={this.onButtonPress.bind(this)}
                 />
             </View>
           </RkAvoidKeyboard>
