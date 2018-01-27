@@ -3,7 +3,7 @@ import { View, Image, ScrollView } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import firebase from '../firebase';
-import { FormInput, FormButton1 } from './Form';
+import { FormInput, FormButton1, FormValidator } from './Form';
 
 class AcquireMerchant extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class AcquireMerchant extends Component {
   }
 
   validateForm() {
-    return !(this.checkIfFieldEmpty());
+    return !FormValidator.checkIfFieldEmpty.call(this);
   }
 
   checkIfFieldEmpty() {
