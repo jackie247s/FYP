@@ -29,10 +29,10 @@ class AcquireMerchant extends Component {
   onButtonPress() {
     if (this.validateForm()) {
       this.pushMerchantData();
-      const authorRef = firebase.database().ref('authorized_merchants/' + this.state.userid);
+      const authorRef = firebase.database().ref(`authorized_merchants/${this.state.userid}`);
       authorRef.push({ authorized: false }).then(() => {
-        alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
-        Actions.PleaseWait();
+        const user = this.props.user;
+        Actions.AttachDocs({ user });
       });
     }
   }
