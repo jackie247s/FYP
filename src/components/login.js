@@ -61,32 +61,49 @@ class Login extends React.Component {
       }
     }
 
-    //Check to see whether the user has submitted the form or whether they are authorized or not and
-    //route them accordingly
+    // Route the user based on certain factors
     routeUser(user) {
-      const authorRef = firebase.database().ref('authorized_merchants/' + user.uid);
+      this.routeWhetherFormFilled(user);
+      this.setState({ visible: false });
+    }
+
+    routeWhetherFormFilled(user) {
+      const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
       authorRef.once('value', snapshot => {
         if (snapshot.val() === null) {
           //The user has not filled in the form
-
           Actions.TermsConditions({ user });
         }
         else {
           // The user has filled in the form
-          // Confirm whether he is authorized
-          const children = snapshot.val();
-          const authorObject = children[Object.keys(children)[0]];
-          if (authorObject.authorized) {
-            // The user is authorized. Give him access to the core app
-            Actions.TabBar({ user });
-          }
-          else {
-            // The user is not authorized. Show him please wait screen
-            Actions.PleaseWait();
-          }
+          this.routeWhetherDocsSubmitted(snapshot, user);
         }
       });
-      this.setState({ visible: false });
+    }
+
+    routeWhetherDocsSubmitted(snapshot, user) {
+      const docImagesRef = firebase.storage().ref(`merchantDocImages/${user.uid}`);
+      const onResolve = () => {
+        this.routeWhetherAutorized(snapshot, user);
+      };
+      const onReject = () => {
+        Actions.AttachDocs({ user });
+      };
+      docImagesRef.getDownloadURL().then(onResolve, onReject);
+    }
+
+    routeWhetherAutorized(snapshot, user) {
+      // Confirm whether he is authorized
+      const children = snapshot.val();
+      const authorObject = children[Object.keys(children)[0]];
+      if (authorObject.authorized) {
+        // The user is authorized. Give him access to the core app
+        Actions.TabBar({ user });
+      }
+      else {
+        // The user is not authorized. Show him please wait screen
+        Actions.PleaseWait();
+      }
     }
 
     validateForm() {
