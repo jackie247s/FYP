@@ -10,6 +10,7 @@ import TermsConditions from './components/termsconditions';
 import MainScreen from './Main';
 import Popup from './Main/popup';
 import TabBar from './components/tabBar';
+import AttachDocs from './components/attachdocs';
 
 class Routes extends Component {
 	render() {
@@ -27,6 +28,7 @@ class Routes extends Component {
 					<Scene key="AcquireMerchant" component={AcquireMerchant} title="AcquireMerchant" />
 					<Scene key="PleaseWait" component={PleaseWait} title="PleaseWait" />
 					<Scene key="TermsConditions" component={TermsConditions} title="TermsConditions" />
+					<Scene key="AttachDocs" component={AttachDocs} title="AttachDocs" />
         </Scene>
       </Router>
     );
