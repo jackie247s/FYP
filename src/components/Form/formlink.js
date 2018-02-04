@@ -24,7 +24,7 @@ const styles = {
   textStyle: {
     color: 'white',
     fontSize: 18,
-    marginLeft: 5
+    marginLeft: 15
   }
 };
 
