@@ -56,7 +56,14 @@ class NewPromotion extends Component {
   }
 
   validateForm() {
-    return !FormValidator.checkIfFieldEmpty.call(this);
+    let formValidated = true;
+
+    if (!FormValidator.checkIfFieldEmpty(this.state)) {
+      alert('Please fill out all the fields');
+      formValidated = false;
+    }
+
+    return formValidated;
   }
 
   renderButton() {
