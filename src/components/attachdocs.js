@@ -19,8 +19,8 @@ class AttachDocs extends Component {
 
   onFormSubmit() {
     if (this.validateForm()) {
-      this.pushDocs();
-      // alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
+      // this.pushDocs();
+      alert('Your documents have been uploaded. Please wait until an administrator has authorized you to use the app');
       // Actions.PleaseWait();
     }
   }
@@ -36,22 +36,37 @@ class AttachDocs extends Component {
   }
 
   validateForm() {
-    return !FormValidator.checkIfFieldEmpty.call(this);
+    let formValidated = true;
+
+    if (!FormValidator.checkIfFieldEmpty(this.state)) {
+      alert('Please fill out all the fields');
+      formValidated = false;
+    }
+
+    return formValidated;
   }
 
   renderLinks() {
     const configArr = [
       {
+        key: 1,
         onPress: this.onButtonPress.bind(this),
         buttonText: 'Attach CNIC'
       },
       {
+        key: 2,
         onPress: this.onButtonPress.bind(this),
         buttonText: 'Attach Domain'
       }
     ];
 
-    return configArr.map(config => <FormLink config={config} />);
+    return configArr.map(
+      config => <FormLink
+        key={config.key}
+        onPress={config.onPress}
+        buttonText={config.buttonText}
+      />
+    );
   }
 
   render() {
