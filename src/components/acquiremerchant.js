@@ -59,19 +59,6 @@ class AcquireMerchant extends Component {
     return formValidated;
   }
 
-  checkIfFieldEmpty() {
-    const entries = Object.entries(this.state);
-    for (let i = 0; i < entries.length; i++) {
-      const prop = entries[i][1];
-      console.log(prop);
-      if (prop === '') {
-        alert('Please fill out all the fields');
-        return true;
-      }
-    }
-    return false;
-  }
-
   pushMerchantData() {
     const merchantData = this.state;
     const merchRef = firebase.database().ref(`merchant_data/${this.state.userid}`);
@@ -194,8 +181,10 @@ const styles = {
     paddingBottom: 30
   },
   headerStyle: {
+    color: '#fff',
     fontSize: 28,
-    marginBottom: 10
+    marginBottom: 10,
+    textAlign: 'center'
   }
 };
 
