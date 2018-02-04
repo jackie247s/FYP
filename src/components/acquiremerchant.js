@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView } from 'react-native';
+import { View, Image, ScrollView, Text, Keyboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import firebase from '../firebase';
@@ -32,13 +32,31 @@ class AcquireMerchant extends Component {
       const authorRef = firebase.database().ref(`authorized_merchants/${this.state.userid}`);
       authorRef.push({ authorized: false }).then(() => {
         const user = this.props.user;
+        alert('Your data has been collected. Please upload the required documents.');
         Actions.AttachDocs({ user });
       });
     }
   }
 
   validateForm() {
-    return !FormValidator.checkIfFieldEmpty.call(this);
+    let formValidated = true;
+
+    if (FormValidator.checkIfFieldEmpty(this.state)) {
+      alert('Please fill out all the fields');
+      formValidated = false;
+    }
+
+    if (!FormValidator.checkValidMobile(this.state.mobile)) {
+      alert('Invalid Mobile No.');
+      formValidated = false;
+    }
+
+    if (!FormValidator.checkValidEmail(this.state.email)) {
+      alert('Invalid Email');
+      formValidated = false;
+    }
+
+    return formValidated;
   }
 
   checkIfFieldEmpty() {
@@ -56,18 +74,22 @@ class AcquireMerchant extends Component {
 
   pushMerchantData() {
     const merchantData = this.state;
-    const merchRef = firebase.database().ref('merchant_data/' + this.state.userid);
+    const merchRef = firebase.database().ref(`merchant_data/${this.state.userid}`);
     merchRef.push(merchantData);
   }
 
   render() {
-    const { backgroundImage, containerStyle } = styles;
+    const { backgroundImage, containerStyle, headerStyle } = styles;
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
         <ScrollView>
           <View style={containerStyle}>
-            <RkAvoidKeyboard>
+            <RkAvoidKeyboard
+              onStartShouldSetResponder={(e) => true}
+              onResponderRelease={(e) => Keyboard.dismiss()}
+            >
+              <Text style={headerStyle}>Enter Merchant Info</Text>
               <FormInput
                 value={this.state.businessname}
                 placeholder='Name of Business'
@@ -170,6 +192,10 @@ const styles = {
     marginTop: 20,
     marginLeft: 10,
     paddingBottom: 30
+  },
+  headerStyle: {
+    fontSize: 28,
+    marginBottom: 10
   }
 };
 
