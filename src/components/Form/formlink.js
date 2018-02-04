@@ -1,12 +1,14 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { Icon } from 'native-base';
 
-const FormLink = ({ config }) => {
-  const { onPress, buttonText } = config;
+const FormLink = (props) => {
+  const { onPress, buttonText } = props;
   const { buttonStyle, textStyle } = styles;
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={onPress}>
+      <Icon style={{ color: '#fff' }} active name='md-attach' />
       <Text style={textStyle}>{buttonText}</Text>
     </TouchableOpacity>
   );
@@ -15,12 +17,14 @@ const FormLink = ({ config }) => {
 const styles = {
   buttonStyle: {
     backgroundColor: 'transparent',
+    flexDirection: 'row',
     marginTop: 5,
     marginBottom: 5
   },
   textStyle: {
     color: 'white',
-    fontSize: 18
+    fontSize: 18,
+    marginLeft: 5
   }
 };
 
