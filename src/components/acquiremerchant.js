@@ -11,6 +11,7 @@ class AcquireMerchant extends Component {
     super(props);
     this.state = {
       userid: props.user.uid,
+      businesstype: '',
       businessname: '',
       location: '',
       address: '',
@@ -19,7 +20,6 @@ class AcquireMerchant extends Component {
       email: '',
       landmark: '',
       owner: '',
-      businesstype: '',
       hours: '',
       facebook: '',
       cnic: '',
@@ -66,7 +66,63 @@ class AcquireMerchant extends Component {
     merchRef.push(merchantData);
   }
 
-  // TODO: The mobile number input field should display a keypad
+  buildFormInputs() {
+    const self = this;
+    const ninputs = 12;
+
+    const formInputs = Object.entries(self.state);
+    // Remove user id prop
+    formInputs.shift();
+    // Remove businesstype props
+    formInputs.shift();
+
+    const placeholders = [
+      'Name of Business',
+      'Location',
+      'Address',
+      'Landline',
+      'Mobile',
+      'Email',
+      'Nearest Landmark',
+      'Owner',
+      'Operating Hours',
+      'Facebook Page Link',
+      'NIC Number',
+      'Turnover'
+    ];
+
+    const inputs = [];
+    let value;
+    let placeholder;
+
+    for (let i = 0; i < ninputs; i++) {
+      let prop = formInputs[i][0];
+      value = formInputs[i][1];
+      placeholder = placeholders[i];
+
+      inputs.push({
+        key: prop,
+        value,
+        placeholder,
+        icon: 'md-person',
+        onChangeText: (newvalue) => self.setState({ [prop]: newvalue })
+      });
+    }
+
+    return inputs;
+  }
+
+  renderFormInputs() {
+    const inputs = this.buildFormInputs();
+    return inputs.map(input =>
+      <FormInput
+        key={input.key}
+        value={input.value}
+        placeholder={input.placeholder}
+        icon={input.icon}
+        onChangeText={input.onChangeText}
+      />);
+  }
 
   renderBusinessTypes() {
     const businessTypes = [
@@ -89,6 +145,8 @@ class AcquireMerchant extends Component {
     );
   }
 
+  // TODO: The mobile number input field should display a keypad
+
   render() {
     const { backgroundImage, containerStyle, headerStyle } = styles;
 
@@ -101,79 +159,8 @@ class AcquireMerchant extends Component {
               onResponderRelease={(e) => Keyboard.dismiss()}
             >
               <Text style={headerStyle}>Enter Merchant Info</Text>
-              <FormInput
-                value={this.state.businessname}
-                placeholder='Name of Business'
-                icon='md-person'
-                onChangeText={(businessname) => this.setState({ businessname })}
-              />
-              <FormInput
-                value={this.state.location}
-                placeholder='Location'
-                icon='md-person'
-                onChangeText={(location) => this.setState({ location })}
-              />
-              <FormInput
-                value={this.state.address}
-                placeholder='Address'
-                icon='md-person'
-                onChangeText={(address) => this.setState({ address })}
-              />
-              <FormInput
-                value={this.state.landline}
-                placeholder='Landline'
-                icon='md-person'
-                onChangeText={(landline) => this.setState({ landline })}
-              />
-              <FormInput
-                value={this.state.mobile}
-                placeholder='Mobile'
-                icon='md-person'
-                onChangeText={(mobile) => this.setState({ mobile })}
-              />
-              <FormInput
-                value={this.state.email}
-                placeholder='Email'
-                icon='md-person'
-                onChangeText={(email) => this.setState({ email })}
-              />
-              <FormInput
-                value={this.state.landmark}
-                placeholder='Nearest Landmark'
-                icon='md-person'
-                onChangeText={(landmark) => this.setState({ landmark })}
-              />
-              <FormInput
-                value={this.state.owner}
-                placeholder='Owner'
-                icon='md-person'
-                onChangeText={(owner) => this.setState({ owner })}
-              />
               {this.renderBusinessTypes()}
-              <FormInput
-                value={this.state.hours}
-                placeholder='Operating Hours'
-                icon='md-mail'
-                onChangeText={(hours) => this.setState({ hours })}
-              />
-              <FormInput
-                value={this.state.facebook}
-                placeholder='Facebook Page Link'
-                icon='md-mail'
-                onChangeText={(facebook) => this.setState({ facebook })}
-              />
-              <FormInput
-                value={this.state.cnic}
-                placeholder='NIC Number'
-                icon='md-mail'
-                onChangeText={(cnic) => this.setState({ cnic })}
-              />
-              <FormInput
-                value={this.state.turnover}
-                placeholder='Turnover'
-                icon='md-unlock'
-                onChangeText={(turnover) => this.setState({ turnover })}
-              />
+              {this.renderFormInputs()}
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <FormButton1
                   buttonText='Register'
