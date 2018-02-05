@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { View, Image, ScrollView, Text, Keyboard } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import { Picker } from 'native-base';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import firebase from '../firebase';
-import { FormInput, FormButton1, FormValidator } from './Form';
+import { FormInput, FormButton1, FormPicker, FormValidator } from './Form';
 
 class AcquireMerchant extends Component {
   constructor(props) {
@@ -63,6 +64,29 @@ class AcquireMerchant extends Component {
     const merchantData = this.state;
     const merchRef = firebase.database().ref(`merchant_data/${this.state.userid}`);
     merchRef.push(merchantData);
+  }
+
+  // TODO: The mobile number input field should display a keypad
+
+  renderBusinessTypes() {
+    const businessTypes = [
+      'Food',
+      'Fuel',
+      'Fashion'
+    ];
+
+    return (
+      <FormPicker
+        selectedValue={this.state.businesstype}
+        onValueChange={(itemValue) => this.setState({ businesstype: itemValue })}
+      >
+        <Picker.Item value="" label="Business Type" />
+        {
+          businessTypes.map(businessType =>
+            <Picker.Item key={businessType} label={businessType} value={businessType} />)
+        }
+      </FormPicker>
+    );
   }
 
   render() {
@@ -125,12 +149,7 @@ class AcquireMerchant extends Component {
                 icon='md-person'
                 onChangeText={(owner) => this.setState({ owner })}
               />
-              <FormInput
-                value={this.state.businesstype}
-                placeholder='Type of Business'
-                icon='md-person'
-                onChangeText={(businesstype) => this.setState({ businesstype })}
-              />
+              {this.renderBusinessTypes()}
               <FormInput
                 value={this.state.hours}
                 placeholder='Operating Hours'
