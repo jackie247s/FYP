@@ -94,19 +94,31 @@ class AcquireMerchant extends Component {
     const inputs = [];
     let value;
     let placeholder;
+    let input;
 
     for (let i = 0; i < ninputs; i++) {
       let prop = formInputs[i][0];
       value = formInputs[i][1];
       placeholder = placeholders[i];
 
-      inputs.push({
+      input = {
         key: prop,
         value,
         placeholder,
         icon: 'md-person',
-        onChangeText: (newvalue) => self.setState({ [prop]: newvalue })
-      });
+        onChangeText: (newvalue) => self.setState({ [prop]: newvalue }),
+        keyboardType: 'default'
+      };
+
+      if (placeholder === 'Mobile') {
+        input.keyboardType = 'phone-pad';
+      }
+
+      if (placeholder === 'Email') {
+        input.keyboardType = 'email-address';
+      }
+
+      inputs.push(input);
     }
 
     return inputs;
@@ -121,6 +133,7 @@ class AcquireMerchant extends Component {
         placeholder={input.placeholder}
         icon={input.icon}
         onChangeText={input.onChangeText}
+        keyboardType={input.keyboardType}
       />);
   }
 
@@ -152,14 +165,14 @@ class AcquireMerchant extends Component {
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
-        <ScrollView>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="always"
+        >
           <View style={containerStyle}>
-            <RkAvoidKeyboard
-              onStartShouldSetResponder={(e) => true}
-              onResponderRelease={(e) => Keyboard.dismiss()}
-            >
-              <Text style={headerStyle}>Enter Merchant Info</Text>
-              {this.renderBusinessTypes()}
+            <Text style={headerStyle}>Enter Merchant Info</Text>
+            {this.renderBusinessTypes()}
+            <RkAvoidKeyboard>
               {this.renderFormInputs()}
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                 <FormButton1
