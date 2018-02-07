@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, Text, Keyboard } from 'react-native';
+import { View, Image, ScrollView, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Picker } from 'native-base';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
@@ -118,6 +118,10 @@ class AcquireMerchant extends Component {
         input.keyboardType = 'email-address';
       }
 
+      if (placeholder === 'NIC Number') {
+        input.keyboardType = 'numeric';
+      }
+
       inputs.push(input);
     }
 
@@ -158,15 +162,12 @@ class AcquireMerchant extends Component {
     );
   }
 
-  // TODO: The mobile number input field should display a keypad
-
   render() {
     const { backgroundImage, containerStyle, headerStyle } = styles;
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
         <ScrollView
-          keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="always"
         >
           <View style={containerStyle}>
