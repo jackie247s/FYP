@@ -28,7 +28,7 @@ class Profile extends Component {
 
   getUserInfo() {
     //Get userinfo from firebase Realtime Database
-    const userInfoRef = firebase.database().ref('merchants/' + this.state.userid);
+    const userInfoRef = firebase.database().ref(`merchants/${this.state.userid}`);
     userInfoRef.once('value', snapshot => {
       const children = snapshot.val();
       const userInfo = children[Object.keys(children)[0]];
@@ -52,14 +52,14 @@ class Profile extends Component {
       });
     };
 
-    firebase.storage().ref('image/' + this.state.userid + '/me.jpg').getDownloadURL()
+    firebase.storage().ref(`image/${this.state.userid}/me.jpg`).getDownloadURL()
     .then(onResolve, onReject);
   }
 
   setProfileImage(image) {
-    const profileImageRef = firebase.storage().ref('images/' + this.state.userid + '/me.jpg');
+    const profileImageRef = firebase.storage().ref(`images/${this.state.userid}/me.jpg`);
     profileImageRef.put(image)
-    .then(snapshot => { this.getProfileImage(); });
+    .then(() => { this.getProfileImage(); });
   }
 
   renderImage() {
@@ -79,6 +79,9 @@ class Profile extends Component {
     );
   }
 
+  // TODO: Redesign Page for better feel
+  // TODO: Add functionality for updating data
+
   renderProfile() {
     const {
       containerStyle,
@@ -87,25 +90,28 @@ class Profile extends Component {
       buttonContainerStyle,
       buttonStyle
     } = styles;
+    let elRender;
 
     if (this.state.loadingInfo) {
-      return <Spinner />;
+      elRender = <Spinner />;
+    } else {
+      elRender = (
+        <View style={containerStyle}>
+          <View style={imageContainerStyle}>
+            {this.renderImage()}
+          </View>
+          <Text style={textStyle}>{this.state.name}</Text>
+          <Text style={textStyle}>{this.state.email}</Text>
+          <View style={buttonContainerStyle}>
+            <Button style={buttonStyle} rounded light onPress={this.onButtonPress.bind(this)}>
+              <Text>Change Picture</Text>
+            </Button>
+          </View>
+        </View>
+      );
     }
 
-    return (
-      <View style={containerStyle}>
-        <View style={imageContainerStyle}>
-          {this.renderImage()}
-        </View>
-        <Text style={textStyle}>{this.state.name}</Text>
-        <Text style={textStyle}>{this.state.email}</Text>
-        <View style={buttonContainerStyle}>
-          <Button style={buttonStyle} rounded light onPress={this.onButtonPress.bind(this)}>
-            <Text>Change Picture</Text>
-          </Button>
-        </View>
-      </View>
-    );
+    return elRender;
   }
 
   render() {
