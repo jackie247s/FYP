@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, ScrollView, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Picker } from 'native-base';
-import { RkAvoidKeyboard } from 'react-native-ui-kitten';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import firebase from '../firebase';
 import { FormInput, FormButton1, FormPicker, FormValidator } from './Form';
 
@@ -148,10 +148,16 @@ class AcquireMerchant extends Component {
       'Fashion'
     ];
 
+    const self = this;
+
     return (
       <FormPicker
         selectedValue={this.state.businesstype}
-        onValueChange={(itemValue) => this.setState({ businesstype: itemValue })}
+        onValueChange={(itemValue) => {
+          console.log(itemValue);
+          console.log(self.state);
+          self.setState({ businesstype: itemValue }, console.log.bind(this, self.state));
+        }}
       >
         <Picker.Item value="" label="Business Type" />
         {
@@ -167,23 +173,21 @@ class AcquireMerchant extends Component {
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
-        <ScrollView
+        <KeyboardAwareScrollView
           keyboardShouldPersistTaps="always"
         >
           <View style={containerStyle}>
             <Text style={headerStyle}>Enter Merchant Info</Text>
             {this.renderBusinessTypes()}
-            <RkAvoidKeyboard>
-              {this.renderFormInputs()}
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <FormButton1
-                  buttonText='Register'
-                  onPress={this.onButtonPress.bind(this)}
-                />
-              </View>
-            </RkAvoidKeyboard>
+            {this.renderFormInputs()}
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <FormButton1
+                buttonText='Register'
+                onPress={this.onButtonPress.bind(this)}
+              />
+            </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </Image>
     );
   }
