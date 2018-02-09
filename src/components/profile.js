@@ -1,44 +1,42 @@
 import React, { Component } from 'react';
-import { Container, Content, Header, Left, Body, Right, Button, Icon, Title,Text } from 'native-base';
-import {Actions} from 'react-native-router-flux';
-import firebase from '../firebase'
-import RNFetchBlob from 'react-native-fetch-blob'
-import ImagePicker from 'react-native-image-crop-picker'
+import { Container, Content, Button, Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-crop-picker';
 import {
+  Alert,
   ScrollView,
   StyleSheet,
-  Image,Dimensions,View,ActivityIndicator,TouchableOpacity
+  Image, Dimensions, View
 } from 'react-native';
 import {
   RkText,
   RkTextInput,
   RkAvoidKeyboard,
-  RkTheme,
   RkStyleSheet,
   RkButton
 } from 'react-native-ui-kitten';
+import firebase from '../firebase';
 
 
 const width = Dimensions.get('window').width;
-const mar=width-200;
+const mar = width - 200;
 
- class Profile extends React.Component {
+ class Profile extends Component {
   constructor(props) {
     super(props);
-
-
     this.state = {
-      name:'',
-      contact:'',
-      batch:'',
-      dp:null
-    }
+      name: '',
+      contact: '',
+      batch: '',
+      dp: null
+    };
   }
 
  componentWillMount() {
   const self = this;
   const userId = this.props.ID;
-  const imageRef = firebase.storage().ref(userId).child("dp.jpg");
+  const imageRef = firebase.storage().ref(userId).child('dp.jpg');
   let Name;
   let Batch;
   let Contact;
@@ -47,11 +45,17 @@ const mar=width-200;
   }).catch((error) => { console.log(error.message); });
 
 
-  const RefData = firebase.database().ref("Users/" + userId);
+  const RefData = firebase.database().ref(`Users/${userId}`);
   RefData.on('value', (snapshot) => {
-    Name = snapshot.val().UserName || 'name';
-    Batch = snapshot.val().Batch || 'batch';
-    Contact = snapshot.val().Contact || 'contact';
+    if (snapshot.val() === null) {
+      Name = 'name';
+      Batch = 'batch';
+      Contact = 'contact';
+    } else {
+      Name = snapshot.val().UserName;
+      Batch = snapshot.val().Batch;
+      Contact = snapshot.val().Contact;
+    }
     self.setState({ name: Name, batch: Batch, contact: Contact });
   });
   }
@@ -90,20 +94,17 @@ const mar=width-200;
         })
         .then((url) => {
 
-          let userData = {}
+          let userData = {};
           //userData[dpNo] = url
           //firebase.database().ref('users').child(uid).update({ ...userData})
-
-
-          this.setState({dp:url});
-
+          this.setState({ dp: url });
         })
         .catch((error) => {
-          alert(error);
+          Alert.alert(error);
         })
     })
     .catch((error) => {
-      alert(error);
+      Alert.alert(error);
     })
   }
 
