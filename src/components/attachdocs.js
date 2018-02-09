@@ -18,7 +18,7 @@ class AttachDocs extends Component {
 
   onButtonPress() {
    if (this.state.cnicImage === true && this.state.domainImage === true) {
-     Actions.TabBar({ user: this.state.userid });
+     Actions.PleaseWait();
    }
    else {
      Alert.alert('Please attach all required documents!');
@@ -61,10 +61,10 @@ class AttachDocs extends Component {
         })
         .then(() => {
           if (document === 'cnic') {
-            Alert.alert('Your CNIC has been attached!');
+            Alert.alert('Your CNIC has been uploaded.');
           }
           else if (document === 'domain') {
-            Alert.alert('Your domain document has been attach!');
+            Alert.alert('Your domain document has been uploaded.');
           }
           uploadBlob.close();
           return imageRef.getDownloadURL();
