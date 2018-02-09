@@ -21,7 +21,7 @@ class ContactUs extends Component {
 
     if (formValid) {
       const UID = this.state.userid;
-      firebase.database().ref('Merchant_Messages/' + UID).set({
+      firebase.database().ref(`Merchant_Messages/${UID}`).set({
         Subject: subject,
         Message: message
       });
@@ -34,21 +34,21 @@ class ContactUs extends Component {
 
   validateForm(subject, message) {
     let formValid = true;
-    if (subject == null && message == null) {
+    if (subject === '' && message === '') {
       Alert.alert(
         'Error',
         'Please fill all fileds!'
       );
       formValid = false;
     }
-    else if (subject == null) {
+    else if (subject === '') {
       Alert.alert(
         'Error',
         'Please write subject!'
       );
       formValid = false;
     }
-    else if (message == null) {
+    else if (message === '') {
       Alert.alert(
         'Error',
         'Please write mesaages!'
