@@ -25,7 +25,7 @@ const mar=width-200;
  class Profile extends React.Component {
   constructor(props) {
     super(props);
-    
+
 
     this.state = {
       name:'',
@@ -34,32 +34,35 @@ const mar=width-200;
       dp:null
     }
   }
- 
- componentWillMount(){
-  var self=this;
-  let userId=this.props.ID;
-  const imageRef = firebase.storage().ref(userId).child("dp.jpg")
+
+ componentWillMount() {
+  const self = this;
+  const userId = this.props.ID;
+  const imageRef = firebase.storage().ref(userId).child("dp.jpg");
+  let Name;
+  let Batch;
+  let Contact;
   imageRef.getDownloadURL().then((url) => {
-    this.setState({dp:url});
-  }).catch(function(error) {console.log(error.message) });
+    this.setState({ dp: url });
+  }).catch((error) => { console.log(error.message); });
 
 
-  var RefData=firebase.database().ref("Users/" + userId);
-    RefData.on("value",function(snapshot) {
-      Name=snapshot.val().UserName;
-      Batch=snapshot.val().Batch;
-      Contact=snapshot.val().Contact;
-      self.setState({name:Name,batch:Batch,contact:Contact});
-    });
-  }  
+  const RefData = firebase.database().ref("Users/" + userId);
+  RefData.on('value', (snapshot) => {
+    Name = snapshot.val().UserName || 'name';
+    Batch = snapshot.val().Batch || 'batch';
+    Contact = snapshot.val().Contact || 'contact';
+    self.setState({ name: Name, batch: Batch, contact: Contact });
+  });
+  }
 
- openPicker(){
-    const Blob = RNFetchBlob.polyfill.Blob
-    const fs = RNFetchBlob.fs
-    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-    window.Blob = Blob
+ openPicker() {
+    const Blob = RNFetchBlob.polyfill.Blob;
+    const fs = RNFetchBlob.fs;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
     //const { uid } = this.state.user
-    const uid =this.props.ID;
+    const uid = this.props.ID;
     ImagePicker.openPicker({
       width: 300,
       height: 300,
@@ -67,23 +70,23 @@ const mar=width-200;
       mediaType: 'photo'
     }).then(image => {
 
-      const imagePath = image.path
-      let uploadBlob = null
+      const imagePath = image.path;
+      let uploadBlob = null;
 
-      const imageRef = firebase.storage().ref(uid).child("dp.jpg")
-      let mime = 'image/jpg'
+      const imageRef = firebase.storage().ref(uid).child("dp.jpg");
+      let mime = 'image/jpg';
       fs.readFile(imagePath, 'base64')
         .then((data) => {
           //console.log(data);
-          return Blob.build(data, { type: `${mime};BASE64` })
+          return Blob.build(data, { type: `${mime};BASE64` });
       })
       .then((blob) => {
-          uploadBlob = blob
-          return imageRef.put(blob, { contentType: mime })
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
         })
         .then(() => {
-          uploadBlob.close()
-          return imageRef.getDownloadURL()
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
         })
         .then((url) => {
 
@@ -91,29 +94,30 @@ const mar=width-200;
           //userData[dpNo] = url
           //firebase.database().ref('users').child(uid).update({ ...userData})
 
-           
-          this.setState({dp:url})
+
+          this.setState({dp:url});
 
         })
         .catch((error) => {
-          alert(error)
+          alert(error);
         })
     })
     .catch((error) => {
-      alert(error)
+      alert(error);
     })
   }
-Goback(){
+
+Goback() {
   Actions.pop();
 }
   render() {
-var image=[];
-  if(this.state.dp!=null){
-    image.push(<Image style={{width: 160, height: 150, borderRadius:20}} source={{uri: this.state.dp}} />)
-  }
-  else{
-    image.push(<Image style={{width:160,height:150}} source={require('../images/placeholder_profile_photo.png')}/>)
-  }
+    const image = [];
+      if (this.state.dp !== null) {
+        image.push(<Image style={{width: 160, height: 150, borderRadius:20}} source={{uri: this.state.dp}} />)
+      }
+      else {
+        image.push(<Image style={{width:160,height:150}} source={require('../images/placeholder_profile_photo.png')}/>)
+      }
     return (
       <Container>
          <Content style={{width:500}}>
@@ -158,9 +162,6 @@ var image=[];
                 <RkText style={{fontWeight:'bold',fontSize:23,color: 'white'}}> Save </RkText>
               </RkButton>
           </View>
-
-          
-          
         </RkAvoidKeyboard>
       </ScrollView>
   </Content>
@@ -194,14 +195,10 @@ let styles = RkStyleSheet.create(theme => ({
   },
   button: {
     marginHorizontal: 5,
-    marginBottom:10,
-    marginTop:32,
-    width:width-15
+    marginBottom: 10,
+    marginTop: 32,
+    width: width - 15
   }
 }));
-
-  
-      
-
 
 export default Profile;

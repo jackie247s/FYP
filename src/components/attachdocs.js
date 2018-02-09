@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Image, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-crop-picker';
 import firebase from '../firebase';
 import { FormButton1, FormValidator, FormLink } from './Form';
-import RNFetchBlob from 'react-native-fetch-blob'
-import ImagePicker from 'react-native-image-crop-picker'
 
 class AttachDocs extends Component {
   constructor(props) {
@@ -17,19 +17,20 @@ class AttachDocs extends Component {
   }
 
   onButtonPress() {
-   if(this.state.cnicImage==true && this.state.domainImage==true){
-     Actions.TabBar({user:this.state.userid});
+   if (this.state.cnicImage === true && this.state.domainImage === true) {
+     Actions.TabBar({ user: this.state.userid });
    }
-   else{
-     Alert.alert("Please attach all required documents!");
+   else {
+     Alert.alert('Please attach all required documents!');
    }
   }
- openPicker(document){
-    this.setState({ loading: true })
-    const Blob = RNFetchBlob.polyfill.Blob
-    const fs = RNFetchBlob.fs
-    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-    window.Blob = Blob
+
+ openPicker(document) {
+    this.setState({ loading: true });
+    const Blob = RNFetchBlob.polyfill.Blob;
+    const fs = RNFetchBlob.fs;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
     //const { uid } = this.state.user
     const uid = this.props.user.uid;
     ImagePicker.openCamera({
@@ -38,51 +39,50 @@ class AttachDocs extends Component {
       cropping: false,
       mediaType: 'photo'
     }).then(image => {
-      if(document=='cnic'){
-        this.setState({cnicImage:true})
+      if (document === 'cnic') {
+        this.setState({ cnicImage: true });
       }
-      else if(document=='domain'){
-        this.setState({domainImage:true})
+      else if (document === 'domain') {
+        this.setState({ domainImage: true });
       }
-      const imagePath = image.path
-      let uploadBlob = null
+      const imagePath = image.path;
+      let uploadBlob = null;
 
-      const imageRef = firebase.storage().ref(uid+'/' + document).child("doc.jpg")
-      let mime = 'image/jpg'
+      const imageRef = firebase.storage().ref(uid+'/' + document).child("doc.jpg");
+      const mime = 'image/jpg';
       fs.readFile(imagePath, 'base64')
         .then((data) => {
           //console.log(data);
-          return Blob.build(data, { type: `${mime};BASE64` })
+          return Blob.build(data, { type: `${mime};BASE64` });
       })
       .then((blob) => {
           uploadBlob = blob
           return imageRef.put(blob, { contentType: mime })
         })
         .then(() => {
-          if(document=='cnic'){
-            Alert.alert("Your CNIC has been attach!")
+          if (document === 'cnic') {
+            Alert.alert('Your CNIC has been attached!');
           }
-          else if(document=='domain'){
-            Alert.alert("Your domain document has been attach!")
+          else if (document === 'domain') {
+            Alert.alert('Your domain document has been attach!');
           }
-          uploadBlob.close()
-          return imageRef.getDownloadURL()
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
         });
-    
-  });
+      });
   }
 
 
   renderLinks() {
-    let CNIC='cnic';
-    let Domain='domain';
+    const CNIC = 'cnic';
+    const Domain = 'domain';
     const configArr = [
       {
-        onPress: this.openPicker.bind(this,CNIC),
+        onPress: this.openPicker.bind(this, CNIC),
         buttonText: 'Attach CNIC'
       },
       {
-        onPress: this.openPicker.bind(this,Domain),
+        onPress: this.openPicker.bind(this, Domain),
         buttonText: 'Attach Domain'
       }
     ];
@@ -91,7 +91,7 @@ class AttachDocs extends Component {
   }
 
   render() {
-    const { backgroundImage, containerStyle ,image} = styles;
+    const { backgroundImage, containerStyle, image } = styles;
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
