@@ -11,10 +11,12 @@ import {
   Text,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  Alert
 } from 'react-native';
 import { Button } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { RkAvoidKeyboard,RkButton,RkText } from 'react-native-ui-kitten';
 import { FormInput } from './Form';
 import firebase from '../firebase';
 
@@ -40,13 +42,13 @@ class Signup extends Component {
      const password = this.state.password;
      let errorMessage = '';
      if (name == null && email == null && password == null)
-            alert('Please Fill all the fields');
+            Alert.alert('Please Fill all the fields');
      else if (name == null)
-            alert('Please Fill the Name field');
+            Alert.alert('Please Fill the Name field');
      else if (email == null)
-            alert('Please Fill the Email field');
+            Alert.alert('Please Fill the Email field');
      else if (password == null)
-            alert('Please Fill the Password field');
+            Alert.alert('Please Fill the Password field');
      else {
             firebase.auth().createUserWithEmailAndPassword(email, password).then(newUser => {
                 firebase.auth().currentUser.sendEmailVerification().then(() => {
@@ -56,17 +58,21 @@ class Signup extends Component {
                       Password: password
                     };
                    firebase.database().ref('merchants/' + newUser.uid).push(userInfo);
-                  alert('verify your email to signin to continue');
+                  Alert.alert('verify your email to signin to continue');
                   Actions.Login();
                 }).catch(error => {
                     errorMessage = error.message;
-                    alert(errorMessage);
+                    Alert.alert(errorMessage);
                     });
              }).catch(error => {
                 errorMessage = error.message;
-                alert(errorMessage);
+                Alert.alert(errorMessage);
                });
         }
+}
+
+MoveToSignIn() {
+  Actions.Login();
 }
 
 renderButton() {
@@ -85,7 +91,7 @@ renderButton() {
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
             <Image style={styles.image} source={require('../images/logo.png')} />
            </View>
-            <View style={{ marginLeft: 10, marginRight: 10 }}>
+            <View style={{ marginLeft: 10, marginRight: 10, marginTop:10 }}>
               <FormInput
                 value={this.state.name}
                 placeholder='Name'
@@ -113,12 +119,12 @@ renderButton() {
             </View>
             <View style={styles.footer}>
               <View style={styles.textRow}>
-                <Text style={{ color: '#dbd8d8' }}>Already have an account?</Text>
+                <Text style={{ color: 'white',fontSize:18 }}>Dont have an account?</Text>
               </View>
-              <Button style={styles.SignInbuttonStyle} rounded transparent>
-                <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Sign In</Text>
-              </Button>
-            </View>
+              <RkButton style={{width:width-50,height:40,backgroundColor:'lightgray',alignSelf:'center',marginTop:10}} onPress={this.MoveToSignIn.bind(this)}>
+                <RkText rkType='header6' style={{ fontWeight: 'bold',color:'white' }}>Sign in now! </RkText>
+              </RkButton>
+          </View>
         </ScrollView>
       </Image>
     );

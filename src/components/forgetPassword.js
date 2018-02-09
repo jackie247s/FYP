@@ -5,7 +5,8 @@ import {
   View,
   Image,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Item, Input, Icon, Button } from 'native-base';
@@ -27,10 +28,17 @@ class ForgetPassword extends React.Component {
       const auth = firebase.auth();
       const emailAddress = this.state.email;
       auth.sendPasswordResetEmail(emailAddress).then(() => {
-      alert('Link to reset password sent to email');
+      Alert.alert('Link to reset password sent to email');
       }).catch(error => {
           errorMessage = error.message;
-          alert(errorMessage);
+          Alert.alert(
+            'Error',
+            'Invalid Email Address',
+            [
+              {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ],
+            { cancelable: false }
+          )
           });
     }
     MoveToSignUp() {
@@ -53,18 +61,18 @@ class ForgetPassword extends React.Component {
   render() {
     return (
       <Image source={require('../images/bg.png')} style={styles.backgroundImage}>
-        
+
         <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
           <Image style={styles.image} source={require('../images/logo.png')} />
         </View>
 
-        <View style={{ marginLeft: 15, marginRight: 10 }}>
+        <View style={{ marginLeft: 15, marginRight: 10, marginTop:30 }}>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-mail'} />
-              <Input 
-              placeholder='Email' 
-              placeholderTextColor={'#dbd8d8'} 
-              onChangeText={(email) => this.setState({ email })}  
+              <Input
+              placeholder='Email'
+              placeholderTextColor={'#dbd8d8'}
+              onChangeText={(email) => this.setState({ email })}
               />
           </Item>
         </View>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 import { Label, Spinner } from 'native-base';
 import DatePicker from 'react-native-datepicker';
+import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import firebase from '../firebase';
 import RedButton from './redbutton';
 import InputBox from './inputbox';
@@ -88,35 +89,63 @@ class NewPromotion extends Component {
             <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
                 <Text style={styles.TextStyle}>Add Your Promotions</Text>
             </View>
-            <InputBox
-              placeholderText={'Product Name'}
-              Icon={'md-create'}
-              value={this.state.productname}
-              onChangeText={productname => this.setState({ productname })}
-            />
-            <InputBox
-              placeholderText={'Product Description'}
-              Icon={'md-document'}
-              value={this.state.productdesc}
-              onChangeText={productdesc => this.setState({ productdesc })}
-            />
-                {/* Change to Dropdown */}
-            <InputBox
-              placeholderText={'Promotion Type'}
-              Icon={'md-options'}
-              value={this.state.promotype}
-              onChangeText={promotype => this.setState({ promotype })}
-            />
-            <InputBox
-              placeholderText={'Discount'}
-              Icon={'md-pricetag'}
-              value={this.state.discount}
-              onChangeText={discount => this.setState({ discount })}
-            />
-            <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
+            <RkAvoidKeyboard>
+              <InputBox
+                placeholderText={'Product Name'}
+                Icon={'md-create'}
+                value={this.state.productname}
+                onChangeText={productname => this.setState({ productname })}
+              />
+              <InputBox
+                placeholderText={'Product Description'}
+                Icon={'md-document'}
+                value={this.state.productdesc}
+                onChangeText={productdesc => this.setState({ productdesc })}
+              />
+                  {/* Change to Dropdown */}
+              <InputBox
+                placeholderText={'Promotion Type'}
+                Icon={'md-options'}
+                value={this.state.promotype}
+                onChangeText={promotype => this.setState({ promotype })}
+              />
+              <InputBox
+                placeholderText={'Discount'}
+                Icon={'md-pricetag'}
+                value={this.state.discount}
+                onChangeText={discount => this.setState({ discount })}
+              />
+              <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
+              <DatePicker
+                style={{ width: 300, borderWidth: 0 }}
+                date={this.state.startdate}
+                mode="date"
+                placeholder="Select Date"
+                format="YYYY-MM-DD"
+                minDate="2017-06-08"
+                maxDate="2020-06-08"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon:
+                   {
+                      position: 'absolute',
+                      left: 0,
+                      top: 4,
+                      marginLeft: 15
+                   },
+                  dateInput:
+                   {
+                     marginLeft: 50
+                   }
+
+                }}
+                onDateChange={(startdate) => { this.setState({ startdate }); }}
+              />
+            <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
             <DatePicker
               style={{ width: 300, borderWidth: 0 }}
-              date={this.state.startdate}
+              date={this.state.enddate}
               mode="date"
               placeholder="Select Date"
               format="YYYY-MM-DD"
@@ -125,47 +154,21 @@ class NewPromotion extends Component {
               confirmBtnText="Confirm"
               cancelBtnText="Cancel"
               customStyles={{
-                dateIcon:
-                 {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 15
-                 },
-                dateInput:
-                 {
-                   marginLeft: 50
-                 }
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 15
+                },
+                dateInput: {
+                  marginLeft: 50
+                }
 
               }}
-              onDateChange={(startdate) => { this.setState({ startdate }); }}
+              onDateChange={enddate => { this.setState({ enddate }); }}
             />
-          <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
-          <DatePicker
-            style={{ width: 300, borderWidth: 0 }}
-            date={this.state.enddate}
-            mode="date"
-            placeholder="Select Date"
-            format="YYYY-MM-DD"
-            minDate="2017-06-08"
-            maxDate="2020-06-08"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 15
-              },
-              dateInput: {
-                marginLeft: 50
-              }
-
-            }}
-            onDateChange={enddate => { this.setState({ enddate }); }}
-          />
-          {this.renderButton()}
+            {this.renderButton()}
+            </RkAvoidKeyboard>
         </Image>
     );
   }

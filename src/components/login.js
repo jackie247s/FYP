@@ -5,11 +5,13 @@ import {
   View,
   Image,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Button } from 'native-base';
-import { RkAvoidKeyboard } from 'react-native-ui-kitten';
+import { RkAvoidKeyboard, RkButton, RkText } from 'react-native-ui-kitten';
 import firebase from '../firebase';
 import { FormInput } from './Form';
 
@@ -21,7 +23,8 @@ class Login extends React.Component {
     this.state = {
       visible: false,
       email: '',
-      password: ''
+      password: '',
+      secureTextEntry: true
     };
   }
 
@@ -48,14 +51,14 @@ class Login extends React.Component {
                 const errorMessage = 'Email not verified';
                 Actions.Login();
                 self.setState({ visible: false });
-                alert(errorMessage);
+                Alert.alert(errorMessage);
               }
             }
           });
         })
         .catch(error => {
           const errorMessage = error.message;
-          alert(errorMessage);
+          Alert.alert(errorMessage);
           self.setState({ visible: false });
         });
       }
@@ -64,8 +67,7 @@ class Login extends React.Component {
     // Route the user based on certain factors
     routeUser(user) {
       // this.routeWhetherFormFilled(user);
-      this.routeWhetherDocsSubmitted2(user);
-      this.setState({ visible: false });
+      this.routeWhetherFormFilled(user);
     }
 
     routeWhetherFormFilled(user) {
@@ -83,11 +85,12 @@ class Login extends React.Component {
     }
 
     routeWhetherDocsSubmitted2(user) {
-      const docImagesRef = firebase.storage().ref(`merchantDocImages/${user.uid}`);
+      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
       const onResolve = () => {
-        this.routeWhetherAutorized2(user);
+        this.routeWhetherAuthorized2(user);
       };
       const onReject = () => {
+        this.setState({ visible: false });
         Actions.AttachDocs({ user });
       };
       docImagesRef.getDownloadURL().then(onResolve, onReject);
@@ -96,11 +99,11 @@ class Login extends React.Component {
     routeWhetherAuthorized2(user) {
       const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
       authorRef.once('value', snapshot => {
-
         if (snapshot.val() === null) {
           //The user has not filled in the form
           const authorRef2 = firebase.database().ref(`authorized_merchants/${user.uid}`);
           authorRef2.push({ authorized: false });
+          this.setState({ visible: false });
           Actions.PleaseWait();
         }
         else {
@@ -109,10 +112,12 @@ class Login extends React.Component {
           const authorObject = children[Object.keys(children)[0]];
           if (authorObject.authorized) {
             // The user is authorized. Give him access to the core app
+            this.setState({ visible: false });
             Actions.TabBar({ user });
           }
           else {
             // The user is not authorized. Show him please wait screen
+            this.setState({ visible: false });
             Actions.PleaseWait();
           }
         }
@@ -125,6 +130,7 @@ class Login extends React.Component {
         this.routeWhetherAutorized(snapshot, user);
       };
       const onReject = () => {
+        this.setState({ visible: false });
         Actions.AttachDocs({ user });
       };
       docImagesRef.getDownloadURL().then(onResolve, onReject);
@@ -136,10 +142,12 @@ class Login extends React.Component {
       const authorObject = children[Object.keys(children)[0]];
       if (authorObject.authorized) {
         // The user is authorized. Give him access to the core app
+        this.setState({ visible: false });
         Actions.TabBar({ user });
       }
       else {
         // The user is not authorized. Show him please wait screen
+        this.setState({ visible: false });
         Actions.PleaseWait();
       }
     }
@@ -150,7 +158,7 @@ class Login extends React.Component {
 
       if (Email == null || Password == null) {
         this.setState({ visible: false });
-        alert('Please Fill all the fields');
+        Alert.alert('Please Fill all the fields');
         return false;
       }
 
@@ -161,17 +169,27 @@ class Login extends React.Component {
       Actions.ForgetPassword();
     }
 
+    Show_hidePassword() {
+      if (this.state.secureTextEntry) {
+        this.setState({ secureTextEntry: false });
+      }
+      else {
+        this.setState({ secureTextEntry: true });
+      }
+    }
+
 
     MoveToSignUp() {
       Actions.Signup();
     }
 
-    renderButton() {
+   renderButton() {
       const { buttonStyle } = styles;
       if (this.state.visible) {
         return (
           <Button style={buttonStyle} rounded light>
              <ActivityIndicator size={'small'} />
+             <Text style={{ fontSize: 18, color: 'gray' }}> Loading....</Text>
           </Button>
         );
       }
@@ -184,6 +202,8 @@ class Login extends React.Component {
      }
 
   render() {
+    console.disableYellowBox = true;
+    console.warn('YellowBox is disabled.');
     const { backgroundImage, image, SignupbuttonStyle, textRow, footer } = styles;
 
     return (
@@ -204,9 +224,15 @@ class Login extends React.Component {
               value={this.state.password}
               placeholder='Password'
               icon='md-unlock'
-              secureTextEntry
+              secureTextEntry={this.state.secureTextEntry}
               onChangeText={(password) => this.setState({ password })}
             />
+            <TouchableOpacity
+              style={{ alignSelf: 'flex-end', marginTop: 10, marginRight: 15 }}
+              onPress={this.Show_hidePassword.bind(this)}
+            >
+              <Text style={{ fontSize: 18, color: 'white' }}>Show Pass</Text>
+            </TouchableOpacity>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
@@ -225,15 +251,18 @@ class Login extends React.Component {
 
           <View style={footer}>
             <View style={textRow}>
-              <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
+              <Text style={{ color: 'white', fontSize: 18 }}>Dont have an account?</Text>
             </View>
-            <Button
+            {/* <Button
               style={SignupbuttonStyle}
               rounded transparent
               onPress={this.MoveToSignUp.bind(this)}
             >
               <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
-            </Button>
+            </Button> */}
+            <RkButton style={{width:width-50,height:40,backgroundColor:'lightgray',alignSelf:'center',marginTop:10}} onPress={this.MoveToSignUp.bind(this)}>
+            <RkText rkType='header6' style={{ fontWeight: 'bold',color:'white' }}>CREATE NEW MARCHANT ACCOUNT </RkText>
+           </RkButton>
           </View>
         </RkAvoidKeyboard>
       </Image>
@@ -249,7 +278,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 150,
     height: 150,
-    marginTop: 80
+    marginTop: 50
   },
   backgroundImage: {
     flex: 1,

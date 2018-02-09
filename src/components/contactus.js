@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, Alert } from 'react-native';
+import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import { FormInput, FormTextBox, FormButton1 } from './Form';
+import firebase from '../firebase';
 
 class ContactUs extends Component {
   constructor(props) {
@@ -15,39 +17,81 @@ class ContactUs extends Component {
   onButtonPress() {
     const subject = this.state.subject;
     const message = this.state.message;
-    this.setState({
-      subject: '',
-      message: ''
-    });
-    alert('Message sent');
+    const formValid = this.validateForm(subject, message);
+
+    if (formValid) {
+      const UID = this.state.userid;
+      firebase.database().ref('Merchant_Messages/' + UID).set({
+        Subject: subject,
+        Message: message
+      });
+      Alert.alert(
+        'Thank you for contacting us!',
+        'You will receive a reply on your email address.'
+      );
+    }
+  }
+
+  validateForm(subject, message) {
+    let formValid = true;
+    if (subject == null && message == null) {
+      Alert.alert(
+        'Error',
+        'Please fill all fileds!'
+      );
+      formValid = false;
+    }
+    else if (subject == null) {
+      Alert.alert(
+        'Error',
+        'Please write subject!'
+      );
+      formValid = false;
+    }
+    else if (message == null) {
+      Alert.alert(
+        'Error',
+        'Please write mesaages!'
+      );
+      formValid = false;
+    }
+
+    return formValid;
   }
 
   render() {
-    const { backgroundStyle, containerStyle, logoContainerStyle, logoStyle, buttonContainerStyle } = styles;
+    const {
+      backgroundStyle,
+      containerStyle,
+      logoContainerStyle,
+      logoStyle,
+      buttonContainerStyle
+      } = styles;
+
     return (
       <Image source={require('../images/bg.png')} style={backgroundStyle} >
         <View style={containerStyle}>
           <View style={logoContainerStyle}>
             <Image source={require('../images/logo.png')} style={logoStyle} />
           </View>
-          <FormInput
-            icon="md-help"
-            value={this.state.subject}
-            placeholder="Subject"
-            onChangeText={subject => this.setState({ subject })}
-          />
-          <FormTextBox
-            icon="md-mail"
-            value={this.state.message}
-            placeholder="Message"
-            onChangeText={message => this.setState({ message })}
-          />
-          <View style={buttonContainerStyle}>
-            <FormButton1
-              buttonText="Submit"
-              onPress={this.onButtonPress.bind(this)}
+          <RkAvoidKeyboard>
+            <FormInput
+              icon="ios-book"
+              placeholder="Subject"
+              onChangeText={(subject) => this.setState({ subject })}
             />
-          </View>
+            <FormTextBox
+              icon="md-mail"
+              placeholder="Message"
+              onChangeText={(message) => this.setState({ message })}
+            />
+            <View style={buttonContainerStyle}>
+              <FormButton1
+                buttonText="Submit"
+                onPress={this.onButtonPress.bind(this)}
+              />
+            </View>
+          </RkAvoidKeyboard>
         </View>
       </Image>
     );

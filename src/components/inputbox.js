@@ -9,6 +9,7 @@ const InputBox = (props) => {
       <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
 				<Icon style={{ color: '#fff' }} active name={props.Icon} />
 				<Input
+					style={{color:'#dbd8d8'}}
 					placeholder={placeholderText}
 					placeholderTextColor={'#dbd8d8'}
 					value={value}
