@@ -72,7 +72,7 @@ class AcquireMerchant extends Component {
 
   buildFormInputs() {
     const self = this;
-    const ninputs = 12;
+    const ninputs = 13;
 
     const formInputs = Object.entries(self.state);
     // Remove user id prop
