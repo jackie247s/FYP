@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Button } from 'native-base';
-import { RkAvoidKeyboard,RkButton,RkText } from 'react-native-ui-kitten';
+import { RkAvoidKeyboard, RkButton, RkText } from 'react-native-ui-kitten';
 import firebase from '../firebase';
 import { FormInput } from './Form';
 
@@ -24,7 +24,7 @@ class Login extends React.Component {
       visible: false,
       email: '',
       password: '',
-      secureTextEntry:true
+      secureTextEntry: true
     };
   }
 
@@ -67,7 +67,7 @@ class Login extends React.Component {
     // Route the user based on certain factors
     routeUser(user) {
       // this.routeWhetherFormFilled(user);
-      this.routeWhetherDocsSubmitted2(user);
+      this.routeWhetherFormFilled(user);
     }
 
     routeWhetherFormFilled(user) {
@@ -85,9 +85,9 @@ class Login extends React.Component {
     }
 
     routeWhetherDocsSubmitted2(user) {
-      const docImagesRef = firebase.storage().ref(`merchantDocImages/${user.uid}`);
+      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
       const onResolve = () => {
-        this.routeWhetherAutorized2(user);
+        this.routeWhetherAuthorized2(user);
       };
       const onReject = () => {
         this.setState({ visible: false });
@@ -99,7 +99,6 @@ class Login extends React.Component {
     routeWhetherAuthorized2(user) {
       const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
       authorRef.once('value', snapshot => {
-
         if (snapshot.val() === null) {
           //The user has not filled in the form
           const authorRef2 = firebase.database().ref(`authorized_merchants/${user.uid}`);
@@ -170,12 +169,12 @@ class Login extends React.Component {
       Actions.ForgetPassword();
     }
 
-    Show_hidePassword(){
-      if(this.state.secureTextEntry){
-        this.setState({secureTextEntry:false})
+    Show_hidePassword() {
+      if (this.state.secureTextEntry) {
+        this.setState({ secureTextEntry: false });
       }
-      else{
-        this.setState({secureTextEntry:true})
+      else {
+        this.setState({ secureTextEntry: true });
       }
     }
 
@@ -190,7 +189,7 @@ class Login extends React.Component {
         return (
           <Button style={buttonStyle} rounded light>
              <ActivityIndicator size={'small'} />
-             <Text style={{fontSize: 18, color: 'gray'}}> Loading....</Text>
+             <Text style={{ fontSize: 18, color: 'gray' }}> Loading....</Text>
           </Button>
         );
       }
@@ -228,8 +227,11 @@ class Login extends React.Component {
               secureTextEntry={this.state.secureTextEntry}
               onChangeText={(password) => this.setState({ password })}
             />
-            <TouchableOpacity style={{alignSelf:'flex-end',marginTop:10,marginRight:15}} onPress = {this.Show_hidePassword.bind(this)}>
-              <Text style={{fontSize:18,color:'white'}}>Show Pass</Text>
+            <TouchableOpacity
+              style={{ alignSelf: 'flex-end', marginTop: 10, marginRight: 15 }}
+              onPress={this.Show_hidePassword.bind(this)}
+            >
+              <Text style={{ fontSize: 18, color: 'white' }}>Show Pass</Text>
             </TouchableOpacity>
           </View>
 
@@ -249,7 +251,7 @@ class Login extends React.Component {
 
           <View style={footer}>
             <View style={textRow}>
-              <Text style={{ color: 'white',fontSize:18 }}>Dont have an account?</Text>
+              <Text style={{ color: 'white', fontSize: 18 }}>Dont have an account?</Text>
             </View>
             {/* <Button
               style={SignupbuttonStyle}
