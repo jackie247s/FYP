@@ -5,15 +5,16 @@ const FormValidator = {
    checkIfFieldEmpty(formObject) {
     const entries = Object.entries(formObject);
     let value;
+    let fieldEmpty = false;
 
-    for (let i = 0; i < entries.length; i++) {
+    for (let i = 0; i < entries.length && fieldEmpty === false; i++) {
       value = entries[i][1];
       if (value === '') {
-        return true;
+        fieldEmpty = true;
       }
     }
 
-    return false;
+    return fieldEmpty;
   },
 
   checkValidMobile(mobileNo) {
