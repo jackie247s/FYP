@@ -84,48 +84,8 @@ class Login extends React.Component {
       });
     }
 
-    routeWhetherDocsSubmitted2(user) {
-      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
-      const onResolve = () => {
-        this.routeWhetherAuthorized2(user);
-      };
-      const onReject = () => {
-        this.setState({ visible: false });
-        Actions.AttachDocs({ user });
-      };
-      docImagesRef.getDownloadURL().then(onResolve, onReject);
-    }
-
-    routeWhetherAuthorized2(user) {
-      const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
-      authorRef.once('value', snapshot => {
-        if (snapshot.val() === null) {
-          //The user has not filled in the form
-          const authorRef2 = firebase.database().ref(`authorized_merchants/${user.uid}`);
-          authorRef2.push({ authorized: false });
-          this.setState({ visible: false });
-          Actions.PleaseWait();
-        }
-        else {
-          // Confirm whether he is authorized
-          const children = snapshot.val();
-          const authorObject = children[Object.keys(children)[0]];
-          if (authorObject.authorized) {
-            // The user is authorized. Give him access to the core app
-            this.setState({ visible: false });
-            Actions.TabBar({ user });
-          }
-          else {
-            // The user is not authorized. Show him please wait screen
-            this.setState({ visible: false });
-            Actions.PleaseWait();
-          }
-        }
-      });
-    }
-
     routeWhetherDocsSubmitted(snapshot, user) {
-      const docImagesRef = firebase.storage().ref(`merchantDocImages/${user.uid}`);
+      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
       const onResolve = () => {
         this.routeWhetherAutorized(snapshot, user);
       };
