@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, ScrollView, Text } from 'react-native';
+import { View, Image, ScrollView, Text, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Picker } from 'native-base';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
@@ -30,30 +30,34 @@ class AcquireMerchant extends Component {
   onButtonPress() {
     if (this.validateForm()) {
       this.pushMerchantData();
-      const authorRef = firebase.database().ref(`authorized_merchants/${this.state.userid}`);
-      authorRef.push({ authorized: false }).then(() => {
-        const user = this.props.user;
-        alert('Your data has been collected. Please upload the required documents.');
-        Actions.AttachDocs({ user });
-      });
+      this.pushAuthorObject();
     }
+  }
+
+  pushAuthorObject() {
+    const authorRef = firebase.database().ref(`authorized_merchants/${this.state.userid}`);
+    authorRef.push({ authorized: false }).then(() => {
+      const user = this.props.user;
+      Alert.alert('Your data has been collected. Please upload the required documents.');
+      Actions.AttachDocs({ user });
+    });
   }
 
   validateForm() {
     let formValidated = true;
 
     if (FormValidator.checkIfFieldEmpty(this.state)) {
-      alert('Please fill out all the fields');
+      Alert.alert('Please fill out all the fields');
       formValidated = false;
     }
 
     if (!FormValidator.checkValidMobile(this.state.mobile)) {
-      alert('Invalid Mobile No.');
+      Alert.alert('Invalid Mobile No.');
       formValidated = false;
     }
 
     if (!FormValidator.checkValidEmail(this.state.email)) {
-      alert('Invalid Email');
+      Alert.alert('Invalid Email');
       formValidated = false;
     }
 
@@ -73,10 +77,9 @@ class AcquireMerchant extends Component {
     const formInputs = Object.entries(self.state);
     // Remove user id prop
     formInputs.shift();
-    // Remove businesstype props
-    formInputs.shift();
 
     const placeholders = [
+      'Business Type',
       'Name of Business',
       'Location',
       'Address',
@@ -97,7 +100,7 @@ class AcquireMerchant extends Component {
     let input;
 
     for (let i = 0; i < ninputs; i++) {
-      let prop = formInputs[i][0];
+      const prop = formInputs[i][0];
       value = formInputs[i][1];
       placeholder = placeholders[i];
 
@@ -110,7 +113,7 @@ class AcquireMerchant extends Component {
         keyboardType: 'default'
       };
 
-      if (placeholder === 'Mobile') {
+      if (placeholder === 'Mobile' || placeholder === 'Landline') {
         input.keyboardType = 'phone-pad';
       }
 
@@ -172,7 +175,6 @@ class AcquireMerchant extends Component {
         >
           <View style={containerStyle}>
             <Text style={headerStyle}>Enter Merchant Info</Text>
-            {this.renderBusinessTypes()}
             <RkAvoidKeyboard>
               {this.renderFormInputs()}
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
