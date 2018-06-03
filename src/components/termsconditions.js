@@ -5,24 +5,24 @@ import { Actions } from 'react-native-router-flux';
 import { FormButton1 } from './Form';
 const width = Dimensions.get('window').width;
 const mar = width - 50;
-class TermsConditions extends React.Component{
-  constructor(props){
+class TermsConditions extends React.Component {
+  constructor(props) {
     super(props);
-    this.state={
-      userId:this.props.user
+    this.state = {
+      userId: this.props.user
     };
   }
-  AcquireMerchant(){
+  AcquireMerchant() {
     Alert.alert(
-      'Thankyou for accept agreement!',
-      'You will be shifted to data collection process within some seconds',
-    )
-    Actions.AcquireMerchant({ user: this.state.userId});
+      'Thank you for accepting the agreement!',
+      'You will now be shifted to data collection process',
+    );
+    Actions.AcquireMerchant({ user: this.state.userId });
   }
 
 
-  render(){
-    const {  backgroundImageStyle, containerStyle, textStyle,buttonStyle } = styles;
+  render() {
+    const { backgroundImageStyle, containerStyle, textStyle, buttonStyle } = styles;
     return (
       <Image source={require('../images/bg.png')} style={backgroundImageStyle}>
         <View style={containerStyle}>

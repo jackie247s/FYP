@@ -16,7 +16,7 @@ class Routes extends Component {
 	render() {
 		return (
 			<Router>
-        <Scene hideNavBar key="root">
+        			<Scene hideNavBar key="root">
 					<Scene key="Main" component={MainScreen} />
 					<Scene key="Popup" component={Popup} title="Password" />
 					<Scene key="TabBar" component={TabBar} title="TabBar" hideNavBar />
