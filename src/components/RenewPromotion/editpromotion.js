@@ -28,14 +28,7 @@ class EditPromotion extends Component {
   }
 
   validateForm() {
-    let formValidated = true;
-
-    if (!FormValidator.checkIfFieldEmpty(this.state)) {
-      alert('Please fill out all the fields');
-      formValidated = false;
-    }
-
-    return formValidated;
+    return !FormValidator.checkIfFieldEmpty.call(this);
   }
 
   updatePromotion() {

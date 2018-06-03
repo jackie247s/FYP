@@ -3,4 +3,3 @@ export * from './formtextbox';
 export * from './forminput';
 export * from './formvalidator';
 export * from './formlink';
-export * from './formpicker';

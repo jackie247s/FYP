@@ -5,8 +5,7 @@ import {
   View,
   Image,
   Dimensions,
-  ActivityIndicator,
-  Alert
+  ActivityIndicator
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Item, Input, Icon, Button } from 'native-base';
@@ -28,17 +27,10 @@ class ForgetPassword extends React.Component {
       const auth = firebase.auth();
       const emailAddress = this.state.email;
       auth.sendPasswordResetEmail(emailAddress).then(() => {
-      Alert.alert('Link to reset password sent to email');
+      alert('Link to reset password sent to email');
       }).catch(error => {
           errorMessage = error.message;
-          Alert.alert(
-            'Error',
-            'Invalid Email Address',
-            [
-              {text: 'OK', onPress: () => console.log('OK Pressed')},
-            ],
-            { cancelable: false }
-          )
+          alert(errorMessage);
           });
     }
     MoveToSignUp() {
@@ -66,7 +58,7 @@ class ForgetPassword extends React.Component {
           <Image style={styles.image} source={require('../images/logo.png')} />
         </View>
 
-        <View style={{ marginLeft: 15, marginRight: 10, marginTop:30 }}>
+        <View style={{ marginLeft: 15, marginRight: 10 }}>
           <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
             <Icon style={{ color: '#fff' }} active name={'md-mail'} />
               <Input
