@@ -6,14 +6,14 @@ import { FormButton1 } from './Form';
 import HeaderComp  from './header'
 const width = Dimensions.get('window').width;
 const mar = width - 50;
-class TermsConditions extends React.Component{
-  constructor(props){
+class TermsConditions extends React.Component {
+  constructor(props) {
     super(props);
     this.state={
       userId:this.props.user
     };
   }
-  AcquireMerchant(){
+  AcquireMerchant() {
     Alert.alert(
       'Thankyou for accept agreement!',
       'You will be shifted to data collection process within three seconds',
@@ -22,7 +22,7 @@ class TermsConditions extends React.Component{
   }
 
 
-  render(){
+  render() {
     const {  backgroundImageStyle, containerStyle, textStyle,buttonStyle } = styles;
     return (
       <Image source={require('../images/formBg8.jpg')} style={backgroundImageStyle}>
@@ -59,7 +59,9 @@ const styles = {
     justifyContent: 'center',
     paddingTop: 10,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,    
+    opacity: 0.5,
+    backgroundColor: 'black'
   },
   textStyle: {
     color: 'white',

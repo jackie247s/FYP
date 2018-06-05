@@ -72,23 +72,28 @@ class Login extends React.Component {
     }
 
     routeWhetherFormFilled(user) {
-      var self=this;
-      const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
+      var self = this;
+      console.log(user);
+      const email = user.email.split("@")[0];
+      const authorRef = firebase.database().ref(`authorized_merchants/${email}`);
       authorRef.once('value', snapshot => {
         if (snapshot.val() === null) {
           //The user has not filled in the form
+          console.log('Not filled');
           self.setState({ visible: false });
           Actions.TermsConditions({ user });
         }
         else {
           // The user has filled in the form
+          console.log('Filled');
           this.routeWhetherDocsSubmitted(snapshot, user);
         }
       });
     }
 
     routeWhetherDocsSubmitted(snapshot, user) {
-      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
+      const email = user.email.split("@")[0];
+      const docImagesRef = firebase.storage().ref(`${email}/cnic/doc.jpg`);
       const onResolve = () => {
         this.routeWhetherAutorized(snapshot, user);
       };

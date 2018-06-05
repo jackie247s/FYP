@@ -17,7 +17,7 @@ class AcquireMerchant extends Component {
       address: '',
       landline: '',
       mobile: '',
-      email: '',
+      email: props.user.email,
       landmark: '',
       owner: '',
       hours: '',
@@ -35,7 +35,8 @@ class AcquireMerchant extends Component {
   }
 
   pushAuthorObject() {
-    const authorRef = firebase.database().ref(`authorized_merchants/${this.state.userid}`);
+    const email = this.state.email.split('@')[0];
+    const authorRef = firebase.database().ref(`authorized_merchants/${email}`);
     authorRef.push({ authorized: false }).then(() => {
       const user = this.props.user;
       Alert.alert('Your data has been collected. Please upload the required documents.');
@@ -66,7 +67,8 @@ class AcquireMerchant extends Component {
 
   pushMerchantData() {
     const merchantData = this.state;
-    const merchRef = firebase.database().ref(`merchant_data/${this.state.userid}`);
+    const email = this.state.email.split('@')[0];
+    const merchRef = firebase.database().ref(`merchant_data/${email}`);
     merchRef.push(merchantData);
   }
 
@@ -214,9 +216,11 @@ const styles = {
     height: null
   },
   containerStyle: {
-    marginTop: 20,
-    marginLeft: 10,
-    paddingBottom: 30
+    paddingTop: 20,
+    paddingLeft: 10,
+    paddingBottom: 30,
+    opacity: 0.5,
+    backgroundColor: 'black'
   },
 };
 

@@ -58,7 +58,8 @@ class Signup extends Component {
                       Email: email,
                       Password: password
                     };
-                   firebase.database().ref('merchants/' + newUser.uid).push(userInfo);
+                    const splitEmail = email.split('@')[0];
+                   firebase.database().ref(`merchants/${splitEmail}`).push(userInfo);
                   Alert.alert('verify your email to signin to continue');
                   Actions.Login();
                 }).catch(error => {

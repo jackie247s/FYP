@@ -29,7 +29,7 @@ const mar = width - 200;
     this.state = {
       name: '',
       contact: '',
-      email: '',
+      email: props.email,
       dp: null
     };
   }

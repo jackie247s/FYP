@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { Container, List, Spinner} from 'native-base';
+import { Container, List, Spinner } from 'native-base';
 import firebase from '../firebase';
 import Promotion from './RenewPromotion/promotion';
 
@@ -10,13 +10,14 @@ class RenewPromotion extends Component {
     this.state = {
       promotions: [],
       userid: props.userid,
+      email: props.email,
       loading: true
     };
   }
 
   componentWillMount() {
-    const userId = this.state.userid;
-    const promotionsRef = firebase.database().ref('promotions/' + userId);
+    const email = this.state.email.split('@')[0];
+    const promotionsRef = firebase.database().ref(`promotions/${email}`);
     promotionsRef.on('value', snapshot => {
       const promotionsArr = [];
       let obj = {};

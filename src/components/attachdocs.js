@@ -32,7 +32,7 @@ class AttachDocs extends Component {
     window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
     window.Blob = Blob;
     //const { uid } = this.state.user
-    const uid = this.props.user.uid;
+    const email = this.props.user.email.split('@')[0];
     ImagePicker.openCamera({
       width: 600,
       height: 600,
@@ -48,7 +48,7 @@ class AttachDocs extends Component {
       const imagePath = image.path;
       let uploadBlob = null;
 
-      const imageRef = firebase.storage().ref(uid+'/' + document).child("doc.jpg");
+      const imageRef = firebase.storage().ref(`${email}/${document}`).child('doc.jpg');
       const mime = 'image/jpg';
       fs.readFile(imagePath, 'base64')
         .then((data) => {
@@ -56,7 +56,7 @@ class AttachDocs extends Component {
           return Blob.build(data, { type: `${mime};BASE64` });
       })
       .then((blob) => {
-          uploadBlob = blob
+          uploadBlob = blob;
           return imageRef.put(blob, { contentType: mime })
         })
         .then(() => {

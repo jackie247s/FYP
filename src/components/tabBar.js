@@ -9,11 +9,11 @@ import ComingSoon from './comingsoon';
 import Analytics from './analytics';
 
 const TabBar = (props) => {
-    const { uid } = props.user;
+    const { uid, email } = props.user;
     return (
         <Tabs renderTabBar={() => <ScrollableTab />}>
           <Tab heading={<TabHeading><Icon name="md-mic" /><Text>Promotions</Text></TabHeading>}>
-            <NewPromotion userid={uid} />
+            <NewPromotion userid={uid} email={email} />
           </Tab>
           <Tab
             heading={<TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}
@@ -23,13 +23,13 @@ const TabBar = (props) => {
           <Tab
             heading={<TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}
           >
-            <RenewPromotion userid={uid} />
+            <RenewPromotion userid={uid} email={email} />
           </Tab>
           <Tab heading={<TabHeading><Icon name="person" /><Text>Profile</Text></TabHeading>}>
-            <Profile userid={uid} />
+            <Profile userid={uid} email={email} />
           </Tab>
           <Tab heading={<TabHeading><Icon name="person" /><Text>Contact Us</Text></TabHeading>}>
-            <ContactUs userid={uid} />
+            <ContactUs userid={uid} email={email} />
           </Tab>
         </Tabs>
     );

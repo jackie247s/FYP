@@ -20,6 +20,7 @@ class NewPromotion extends Component {
       startdate: '2017-12-10',
       enddate: '2017-12-10',
       userid: props.userid,
+      email: props.email,
       loading: false
     };
   }
@@ -57,9 +58,9 @@ class NewPromotion extends Component {
             Alert.alert(
              'Error',
              'Please fill Discount field');
-             } else{
-                const userId = this.state.userid;
-                const promotions = firebase.database().ref(`promotions/${userId}`);
+             } else {
+                const email = this.state.email.split('@')[0];
+                const promotions = firebase.database().ref(`promotions/${email}`);
                 const promotion = {
                   productname: this.state.productname,
                   productdesc: this.state.productdesc,
@@ -79,8 +80,6 @@ class NewPromotion extends Component {
                 Alert.alert('Promotion Added');
               }
     }
-
-
 
   renderButton() {
     if (this.state.loading) {
@@ -132,7 +131,7 @@ class NewPromotion extends Component {
                 />
                 <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>Start date</Label>
                 <DatePicker
-                  style={{ width: 300, borderWidth: 0}}
+                  style={{ width: 300, borderWidth: 0, color: 'white'}}
                   date={this.state.startdate}
                   mode="date"
                   placeholder="Select Date"
@@ -159,7 +158,7 @@ class NewPromotion extends Component {
                 />
               <Label style={{ margin: 5, marginLeft: 50, color: '#dbd8d8' }}>End date</Label>
               <DatePicker
-                style={{ width: 300, borderWidth: 0 }}
+            style={{ width: 300, borderWidth: 0, color: 'white' }}
                 date={this.state.enddate}
                 mode="date"
                 placeholder="Select Date"
