@@ -9,7 +9,7 @@ const FormButton1 = (props) => {
   const { onPress, buttonText } = props;
   return (
     <Button style={styles.buttonStyle} rounded light onPress={onPress}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{buttonText}</Text>
+      <Text style={{ fontSize: 18, fontWeight: 'bold',color:'white' }}>{buttonText}</Text>
     </Button>
   );
 };
@@ -28,6 +28,7 @@ const styles = {
     shadowOpacity: 0.2,
     elevation: 5,
     position: 'relative',
+    backgroundColor:'#ca3947'
   }
 };
 

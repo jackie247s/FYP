@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, View } from 'react-native';
-import { Label } from 'native-base';
+import { Label,Image } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 import { RkAvoidKeyboard } from 'react-native-ui-kitten';
 import InputBox from '../inputbox';
@@ -28,7 +28,14 @@ class EditPromotion extends Component {
   }
 
   validateForm() {
-    return !FormValidator.checkIfFieldEmpty.call(this);
+    let formValidated = true;
+
+    if (!FormValidator.checkIfFieldEmpty(this.state)) {
+      alert('Please fill out all the fields');
+      formValidated = false;
+    }
+
+    return formValidated;
   }
 
   updatePromotion() {
@@ -64,6 +71,7 @@ class EditPromotion extends Component {
     const { visible, modal } = this.props;
 
     return (
+
       <View>
         <Modal
           animationType="slide"
@@ -74,7 +82,6 @@ class EditPromotion extends Component {
             modal.setModalVisible(false);
           }}
         >
-          <RkAvoidKeyboard>
             <InputBox
               placeholderText={'Product Name'}
               Icon={'md-create'}
@@ -154,10 +161,10 @@ class EditPromotion extends Component {
             <View style={styles.buttonContainerStyle}>
                 <RedButton
                   buttonText={'Submit'}
-                  onPress={this.onButtonPress.bind(this)}
+                  onPress={this.updatePromotion.bind(this)}
                 />
             </View>
-          </RkAvoidKeyboard>
+
         </Modal>
       </View>
     );
@@ -169,7 +176,12 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: 30
-  }
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
 };
 
 export default EditPromotion;

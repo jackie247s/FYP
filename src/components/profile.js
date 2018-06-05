@@ -1,144 +1,234 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Button, Spinner } from 'native-base';
+import { ImageBackground } from 'react-native';
+import { Container, Content, Button, Icon , Thumbnail , Text} from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-crop-picker';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Image, Dimensions, View
+} from 'react-native';
+import {
+  RkText,
+  RkTextInput,
+  RkAvoidKeyboard,
+  RkStyleSheet,
+  RkButton
+} from 'react-native-ui-kitten';
 import firebase from '../firebase';
-import ProfileImage from './Profile/ProfileImage';
 
-class Profile extends Component {
+
+const width = Dimensions.get('window').width;
+const mar = width - 200;
+
+ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userid: this.props.userid,
       name: '',
+      contact: '',
       email: '',
-      image: '',
-      loadingInfo: true,
-      loadingImage: true
+      dp: null
     };
   }
 
-  componentWillMount() {
-    this.getUserInfo();
-    this.getProfileImage();
-  }
+ componentWillMount() {
+  const self = this;
+  const userId = this.props.ID;
+  const imageRef = firebase.storage().ref(userId).child('dp.jpg');
+  imageRef.getDownloadURL().then((url) => {
+    this.setState({ dp: url });
+  }).catch((error) => { console.log(error.message); });
 
-  onButtonPress() {
 
-  }
-
-  getUserInfo() {
-    //Get userinfo from firebase Realtime Database
-    const userInfoRef = firebase.database().ref('merchants/' + this.state.userid);
-    userInfoRef.once('value', snapshot => {
-      const children = snapshot.val();
-      const userInfo = children[Object.keys(children)[0]];
-      const name = userInfo.Name;
-      const email = userInfo.Email;
-      this.setState({ name, email, loadingInfo: false });
-    });
-  }
-
-  getProfileImage() {
-    this.setState({ loadingImage: true });
-
-    const onResolve = (foundURL) => {
-      this.setState({ image: foundURL, loadingImage: false });
-    };
-
-    const onReject = (error) => {
-      firebase.storage().ref('images/placeholder_profile_photo.png').getDownloadURL()
-      .then(url => {
-        this.setState({ image: url, loadingImage: false });
-      });
-    };
-
-    firebase.storage().ref('image/' + this.state.userid + '/me.jpg').getDownloadURL()
-    .then(onResolve, onReject);
-  }
-
-  setProfileImage(image) {
-    const profileImageRef = firebase.storage().ref('images/' + this.state.userid + '/me.jpg');
-    profileImageRef.put(image)
-    .then(snapshot => { this.getProfileImage(); });
-  }
-
-  renderImage() {
-    if (this.state.loadingImage) {
-      return (
-        <View>
-          <Spinner />
-          <Text> Image Loading </Text>
-        </View>
-      );
+  const RefData = firebase.database().ref(`merchants/${userId}/{userKey}`);
+  RefData.on('value', (snapshot) => {
+    if (snapshot.val() === null) {
+      Name = '-----';
+      Email = '-----';
+      Contact = '-------';
+    } else {
+      Name = snapshot.val().Name;
+      Email = snapshot.val().Email;
+      Contact='03470000011'
     }
-
-    return (
-      <ProfileImage
-        source={this.state.image}
-      />
-    );
+    self.setState({ name: Name, email: Email, contact: Contact });
+  });
   }
 
-  renderProfile() {
-    const {
-      containerStyle,
-      imageContainerStyle,
-      textStyle,
-      buttonContainerStyle,
-      buttonStyle
-    } = styles;
+ openPicker() {
+    const Blob = RNFetchBlob.polyfill.Blob;
+    const fs = RNFetchBlob.fs;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
+    //const { uid } = this.state.user
+    const uid = this.props.ID;
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      mediaType: 'photo'
+    }).then(image => {
 
-    if (this.state.loadingInfo) {
-      return <Spinner />;
-    }
+      const imagePath = image.path;
+      let uploadBlob = null;
 
-    return (
-      <View style={containerStyle}>
-        <View style={imageContainerStyle}>
-          {this.renderImage()}
-        </View>
-        <Text style={textStyle}>{this.state.name}</Text>
-        <Text style={textStyle}>{this.state.email}</Text>
-        <View style={buttonContainerStyle}>
-          <Button style={buttonStyle} rounded light onPress={this.onButtonPress.bind(this)}>
-            <Text>Change Picture</Text>
-          </Button>
-        </View>
-      </View>
-    );
+      const imageRef = firebase.storage().ref(uid).child("dp.jpg");
+      let mime = 'image/jpg';
+      fs.readFile(imagePath, 'base64')
+        .then((data) => {
+          //console.log(data);
+          return Blob.build(data, { type: `${mime};BASE64` });
+      })
+      .then((blob) => {
+          uploadBlob = blob;
+          return imageRef.put(blob, { contentType: mime });
+        })
+        .then(() => {
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        })
+        .then((url) => {
+
+          let userData = {};
+          //userData[dpNo] = url
+          //firebase.database().ref('users').child(uid).update({ ...userData})
+          this.setState({ dp: url });
+        })
+        .catch((error) => {
+          Alert.alert(error);
+        })
+    })
+    .catch((error) => {
+      Alert.alert(error);
+    })
   }
-
+handleform(){
+  Alert.alert("User Information Updated!")
+}
+Goback() {
+  Actions.pop();
+}
   render() {
-    const { containerStyle } = styles;
-
+    var image=[];
+    if(this.state.dp!=null){
+      image.push(
+        <Thumbnail style={{width:180,height:180,borderRadius:100,borderColor:'white',borderWidth:2}}
+        source={{uri: this.state.dp}}
+        />
+      )
+    }
+    else{
+      image.push(
+        <Thumbnail  style={{width:180,height:180,borderRadius:100,borderColor:'white',borderWidth:2}}
+        source={require('../images/placeholder_profile_photo.png')}
+        />
+      )
+    }
     return (
-      <View style={containerStyle}>
-        {this.renderProfile()}
-      </View>
+      <Container>
+        <Content>
+          <ScrollView>
+          <Image source={require('../images/ProfileBg.jpg')} style={styles.backgroundImage}>
+              <View style={styles.header}>
+                <View style={{alignSelf:'center'}}>
+                  {image}
+                  <Button style={{alignSelf:'center',marginTop:-50,marginLeft:100}} transparent onPress={this.openPicker.bind(this)}>
+                    <Icon style={{ color: 'white',fontSize:60 }}  name={'ios-reverse-camera'} />
+                  </Button>
+                </View>
+              </View>
+            </Image>
+          <View style={styles.section}>
+            <View style={{alignSelf:'center',margin:5}}>
+                <Text style={{color:'#ca3947',fontWeight:'bold'}}>PERSONAL INFORMATION</Text>
+            </View>
+            <View style={styles.row}>
+              <RkTextInput label='Name'
+                           value={this.state.name}
+                           rkType='right clear'
+                           onChangeText={(text) => this.setState({name: text})}/>
+            </View>
+            <View style={styles.row}>
+              <RkTextInput label='Email'
+                           value={this.state.batch}
+                           onChangeText={(text) => this.setState({email: text})}
+                           rkType='right clear'/>
+            </View>
+            <View style={styles.row}>
+              <RkTextInput label='Contact'
+                           value={this.state.contact}
+                           onChangeText={(text) => this.setState({contact: text})}
+                           rkType='right clear'/>
+            </View>
+
+
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center',marginBottom:20 }} >
+              <Button style={styles.buttonStyle} rounded onPress={this.handleform.bind(this)}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold',color:'white' }}>Save</Text>
+              </Button>
+          </View>
+      </ScrollView>
+  </Content>
+
+      </Container>
     );
   }
 }
 
-const styles = {
-  containerStyle: {
-    alignItems: 'center',
+
+let styles = RkStyleSheet.create(theme => ({
+  root: {
+    backgroundColor: theme.colors.screen.base
+  },
+  header: {
+    backgroundColor: theme.colors.screen.neutral,
+    paddingVertical: 25
+  },
+  section: {
+    marginVertical: 20
+  },
+  heading: {
+    paddingBottom: 12.5
+  },
+  row: {
+    flexDirection: 'row',
+    paddingHorizontal: 17.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors.border.base,
+    alignItems: 'center'
+  },
+  button: {
+    marginHorizontal: 5,
+    marginBottom: 10,
+    marginTop: 32,
+    width: width - 15
+  },
+  backgroundImage: {
     flex: 1,
-    marginTop: 15
-  },
-  imageContainerStyle: {
-    marginBottom: 10
-  },
-  textStyle: {
-    marginTop: 10
-  },
-  buttonContainerStyle: {
-    alignItems: 'center',
-    marginTop: 15
+    width: null,
+    height: null,
   },
   buttonStyle: {
-    paddingLeft: 10,
-    paddingRight: 10
+    flexDirection: 'row',
+    width: width-30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    marginTop: 20,
+    padding: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    elevation: 5,
+    position: 'relative',
+    backgroundColor:'#ca3947'
+
   }
-};
+}));
 
 export default Profile;

@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
-
+import HeaderComp from './header'
 const PleaseWait = () => {
   const { backgroundImage, containerStyle, textStyle } = styles;
   return (
     <Image source={require('../images/bg.png')} style={backgroundImage}>
+    <HeaderComp headerText="AUTHORIZATION" />
       <View style={containerStyle}>
         <Text style={textStyle}>You are not authorized to access the app yet.</Text>
         <Text style={textStyle}>
@@ -30,7 +31,8 @@ const styles = {
   textStyle: {
     color: 'white',
     fontSize: 15,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight:'bold'
   }
 };
 

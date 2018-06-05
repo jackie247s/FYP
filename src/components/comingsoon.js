@@ -7,9 +7,9 @@ class ComingSoon extends Component {
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
-        <View style={containerStyle}>
+        {/* <View style={containerStyle}>
           <Text style={textStyle}>Coming Soon</Text>
-        </View>
+        </View> */}
       </Image>
     );
   }

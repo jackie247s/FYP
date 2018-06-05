@@ -10,6 +10,8 @@ import Routes from './src';
 
 export default class App extends Component<{}> {
   render() {
+  	console.disableYellowBox = true;
+    console.warn('YellowBox is disabled.');
     return (
       <Routes />
     );

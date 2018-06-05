@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Container, List, Spinner } from 'native-base';
+import { View, Text, ScrollView } from 'react-native';
+import { Container, List, Spinner} from 'native-base';
 import firebase from '../firebase';
 import Promotion from './RenewPromotion/promotion';
 
@@ -54,7 +54,9 @@ class RenewPromotion extends Component {
     return (
       <Container>
         <List>
-          {this.renderPromotions()}
+          <ScrollView>
+            {this.renderPromotions()}
+          </ScrollView>
         </List>
       </Container>
     );

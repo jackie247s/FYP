@@ -6,8 +6,9 @@ const FormTextBox = (props) => {
 
   return (
     <Item style={{ marginLeft: 8, marginRight: 8, marginTop: 10 }} rounded>
-      <Icon style={{ color: '#fff' }} active name={icon} />
+      <Icon style={{ color: '#ca3947' }} active name={icon} />
         <Input
+          style={{color:'black'}}
           value={value}
           placeholder={placeholder}
           placeholderTextColor={'#dbd8d8'}

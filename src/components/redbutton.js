@@ -8,7 +8,7 @@ const mar = width - 50;
 const RedButton = (props) => {
 	return (
 			<Button style={styles.buttonStyle} rounded light onPress={props.onPress}>
-				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>{props.buttonText}</Text>
+				<Text style={{ fontSize: 18, fontWeight: 'bold',color:'white' }}>{props.buttonText}</Text>
 			</Button>
 		);
 };
@@ -22,11 +22,12 @@ const styles = {
     height: 50,
     marginTop: 20,
     padding: 15,
-    shadowColor: '#000',
+    shadowColor: 'white',
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
     elevation: 5,
     position: 'relative',
+    backgroundColor:'#ca3947'
 
   }
 

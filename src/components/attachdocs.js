@@ -1,52 +1,88 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import RNFetchBlob from 'react-native-fetch-blob';
+import ImagePicker from 'react-native-image-crop-picker';
 import firebase from '../firebase';
 import { FormButton1, FormValidator, FormLink } from './Form';
-
+import HeaderComp from './header';
 class AttachDocs extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userid: props.user.uid,
-      cnicImage: ''
+      cnicImage: false,
+      domainImage:false
     };
   }
 
   onButtonPress() {
-
+   if (this.state.cnicImage === true && this.state.domainImage === true) {
+     Actions.PleaseWait();
+   }
+   else {
+     Alert.alert('Please attach all required documents!');
+   }
   }
 
-  onFormSubmit() {
-    if (this.validateForm()) {
-      this.pushDocs();
-      // alert('Your data has been collected. Please wait until an administrator has authorized you to use the app');
-      // Actions.PleaseWait();
-    }
+ openPicker(document) {
+    this.setState({ loading: true });
+    const Blob = RNFetchBlob.polyfill.Blob;
+    const fs = RNFetchBlob.fs;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
+    //const { uid } = this.state.user
+    const uid = this.props.user.uid;
+    ImagePicker.openCamera({
+      width: 600,
+      height: 600,
+      cropping: false,
+      mediaType: 'photo'
+    }).then(image => {
+      if (document === 'cnic') {
+        this.setState({ cnicImage: true });
+      }
+      else if (document === 'domain') {
+        this.setState({ domainImage: true });
+      }
+      const imagePath = image.path;
+      let uploadBlob = null;
+
+      const imageRef = firebase.storage().ref(uid+'/' + document).child("doc.jpg");
+      const mime = 'image/jpg';
+      fs.readFile(imagePath, 'base64')
+        .then((data) => {
+          //console.log(data);
+          return Blob.build(data, { type: `${mime};BASE64` });
+      })
+      .then((blob) => {
+          uploadBlob = blob
+          return imageRef.put(blob, { contentType: mime })
+        })
+        .then(() => {
+          if (document === 'cnic') {
+            Alert.alert('Your CNIC has been uploaded.');
+          }
+          else if (document === 'domain') {
+            Alert.alert('Your domain document has been uploaded.');
+          }
+          uploadBlob.close();
+          return imageRef.getDownloadURL();
+        });
+      });
   }
 
-  pushDocs() {
-    const ref = firebase.storage().ref(`merchantDocImages/${this.props.uid}`);
-    const entries = Object.entries(this.state);
-    let image;
-    for (let i = 0; i < entries.length; i++) {
-      image = entries[i][1];
-      ref.put(image);
-    }
-  }
-
-  validateForm() {
-    return !FormValidator.checkIfFieldEmpty.call(this);
-  }
 
   renderLinks() {
+    const CNIC = 'cnic';
+    const Domain = 'domain';
     const configArr = [
       {
-        onPress: this.onButtonPress.bind(this),
+        onPress: this.openPicker.bind(this, CNIC),
         buttonText: 'Attach CNIC'
       },
       {
-        onPress: this.onButtonPress.bind(this),
+        onPress: this.openPicker.bind(this, Domain),
         buttonText: 'Attach Domain'
       }
     ];
@@ -55,16 +91,20 @@ class AttachDocs extends Component {
   }
 
   render() {
-    const { backgroundImage, containerStyle } = styles;
+    const { backgroundImage, containerStyle, image } = styles;
 
     return (
       <Image source={require('../images/bg.png')} style={backgroundImage}>
+      <HeaderComp headerText="DOCUMENT COLLECTION" />
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
+          <Image style={image} source={require('../images/logo.png')} />
+        </View>
         <View style={containerStyle}>
           {this.renderLinks()}
           <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
             <FormButton1
               buttonText='Submit'
-              onPress={this.onFormSubmit.bind(this)}
+              onPress={this.onButtonPress.bind(this)}
             />
           </View>
         </View>
@@ -81,7 +121,15 @@ const styles = {
   },
   containerStyle: {
     alignItems: 'center',
-    marginTop: 120
+    marginTop: 30
+  },
+  image: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    resizeMode: 'contain',
+    width: 150,
+    height: 150,
+    marginTop: 50
   }
 };
 

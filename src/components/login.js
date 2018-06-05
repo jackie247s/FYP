@@ -5,11 +5,13 @@ import {
   View,
   Image,
   Dimensions,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Button } from 'native-base';
-import { RkAvoidKeyboard } from 'react-native-ui-kitten';
+import { RkAvoidKeyboard, RkButton, RkText } from 'react-native-ui-kitten';
 import firebase from '../firebase';
 import { FormInput } from './Form';
 
@@ -21,7 +23,8 @@ class Login extends React.Component {
     this.state = {
       visible: false,
       email: '',
-      password: ''
+      password: '',
+      secureTextEntry: true
     };
   }
 
@@ -29,7 +32,8 @@ class Login extends React.Component {
       event.preventDefault();
 
       const self = this;
-      const Email = this.state.email;
+      var Email = this.state.email;
+      Email=Email.toLowerCase();
       const Password = this.state.password;
       const Auth = firebase.auth();
       this.setState({ visible: true });
@@ -48,14 +52,14 @@ class Login extends React.Component {
                 const errorMessage = 'Email not verified';
                 Actions.Login();
                 self.setState({ visible: false });
-                alert(errorMessage);
+                Alert.alert(errorMessage);
               }
             }
           });
         })
         .catch(error => {
           const errorMessage = error.message;
-          alert(errorMessage);
+          Alert.alert(errorMessage);
           self.setState({ visible: false });
         });
       }
@@ -63,15 +67,17 @@ class Login extends React.Component {
 
     // Route the user based on certain factors
     routeUser(user) {
+      // this.routeWhetherFormFilled(user);
       this.routeWhetherFormFilled(user);
-      this.setState({ visible: false });
     }
 
     routeWhetherFormFilled(user) {
+      var self=this;
       const authorRef = firebase.database().ref(`authorized_merchants/${user.uid}`);
       authorRef.once('value', snapshot => {
         if (snapshot.val() === null) {
           //The user has not filled in the form
+          self.setState({ visible: false });
           Actions.TermsConditions({ user });
         }
         else {
@@ -82,11 +88,12 @@ class Login extends React.Component {
     }
 
     routeWhetherDocsSubmitted(snapshot, user) {
-      const docImagesRef = firebase.storage().ref(`merchantDocImages/${user.uid}`);
+      const docImagesRef = firebase.storage().ref(`${user.uid}/cnic/doc.jpg`);
       const onResolve = () => {
         this.routeWhetherAutorized(snapshot, user);
       };
       const onReject = () => {
+        this.setState({ visible: false });
         Actions.AttachDocs({ user });
       };
       docImagesRef.getDownloadURL().then(onResolve, onReject);
@@ -98,10 +105,12 @@ class Login extends React.Component {
       const authorObject = children[Object.keys(children)[0]];
       if (authorObject.authorized) {
         // The user is authorized. Give him access to the core app
+        this.setState({ visible: false });
         Actions.TabBar({ user });
       }
       else {
         // The user is not authorized. Show him please wait screen
+        this.setState({ visible: false });
         Actions.PleaseWait();
       }
     }
@@ -112,7 +121,7 @@ class Login extends React.Component {
 
       if (Email == null || Password == null) {
         this.setState({ visible: false });
-        alert('Please Fill all the fields');
+        Alert.alert('Please Fill all the fields');
         return false;
       }
 
@@ -123,29 +132,41 @@ class Login extends React.Component {
       Actions.ForgetPassword();
     }
 
+    Show_hidePassword() {
+      if (this.state.secureTextEntry) {
+        this.setState({ secureTextEntry: false });
+      }
+      else {
+        this.setState({ secureTextEntry: true });
+      }
+    }
+
 
     MoveToSignUp() {
       Actions.Signup();
     }
 
-    renderButton() {
+   renderButton() {
       const { buttonStyle } = styles;
       if (this.state.visible) {
         return (
-          <Button style={buttonStyle} rounded light>
+          <Button style={buttonStyle} rounded>
              <ActivityIndicator size={'small'} />
+             <Text style={{ fontSize: 18, color: 'white' }}> Loading....</Text>
           </Button>
         );
       }
 
       return (
-        <Button style={buttonStyle} rounded light onPress={this.handleLogin.bind(this)}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000' }}>Login</Text>
+        <Button style={buttonStyle} rounded onPress={this.handleLogin.bind(this)}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Login</Text>
         </Button>
       );
      }
 
   render() {
+    console.disableYellowBox = true;
+    console.warn('YellowBox is disabled.');
     const { backgroundImage, image, SignupbuttonStyle, textRow, footer } = styles;
 
     return (
@@ -155,7 +176,7 @@ class Login extends React.Component {
             <Image style={image} source={require('../images/logo.png')} />
           </View>
 
-          <View style={{ marginLeft: 15, marginRight: 10 }}>
+          <View>
             <FormInput
               value={this.state.email}
               placeholder='Email'
@@ -166,9 +187,15 @@ class Login extends React.Component {
               value={this.state.password}
               placeholder='Password'
               icon='md-unlock'
-              secureTextEntry
+              secureTextEntry={this.state.secureTextEntry}
               onChangeText={(password) => this.setState({ password })}
             />
+            <TouchableOpacity
+              style={{ alignSelf: 'flex-end', marginTop: 10, marginRight: 15 }}
+              onPress={this.Show_hidePassword.bind(this)}
+            >
+              <Text style={{ fontSize: 18, color: 'white' }}>Show Pass</Text>
+            </TouchableOpacity>
           </View>
 
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
@@ -177,25 +204,21 @@ class Login extends React.Component {
 
           <View style={{ flexDirection: 'row', justifyContent: 'center' }} >
             <Button rounded transparent onPress={this.forgetPassword.bind(this)} >
-              <Text
-                style={{ fontWeight: 'bold', color: '#fff', fontSize: 24 }}
+              <Text style={{ fontWeight: 'bold', color: '#fff',
+               fontSize: 18,borderBottomWidth:1,borderColor:'white' }}
               >
-              Forget Password
+              Forget Password?
               </Text>
             </Button>
           </View>
 
-          <View style={footer}>
+          <View>
             <View style={textRow}>
-              <Text style={{ color: '#dbd8d8' }}>Dont have an account?</Text>
+              <Text style={{ color: 'white', fontSize: 18 }}>-Or-</Text>
             </View>
-            <Button
-              style={SignupbuttonStyle}
-              rounded transparent
-              onPress={this.MoveToSignUp.bind(this)}
-            >
-              <Text style={{ fontWeight: 'bold', color: '#fff', fontSize: 20 }} >Signup Now</Text>
-            </Button>
+            <RkButton style={{width:width-50,height:40,backgroundColor:'#ca3947',alignSelf:'center',marginTop:10}} onPress={this.MoveToSignUp.bind(this)}>
+            <RkText rkType='header6' style={{ fontWeight: 'bold',color:'white' }}>CREATE NEW MERCHANT ACCOUNT </RkText>
+           </RkButton>
           </View>
         </RkAvoidKeyboard>
       </Image>
@@ -211,7 +234,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: 150,
     height: 150,
-    marginTop: 80
+    marginTop: 50
   },
   backgroundImage: {
     flex: 1,
@@ -234,7 +257,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,
     elevation: 5,
-    position: 'relative'
+    position: 'relative',
+    backgroundColor:'#ca3947'
 
   },
   SignupbuttonStyle: {

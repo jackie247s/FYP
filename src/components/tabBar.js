@@ -6,6 +6,7 @@ import RenewPromotion from './renewpromotion';
 import Profile from './profile';
 import ContactUs from './contactus';
 import ComingSoon from './comingsoon';
+import Analytics from './analytics';
 
 const TabBar = (props) => {
     const { uid } = props.user;
@@ -17,7 +18,7 @@ const TabBar = (props) => {
           <Tab
             heading={<TabHeading><Icon name="md-analytics" /><Text>Analytics</Text></TabHeading>}
           >
-            <SignUp />
+            <Analytics />
           </Tab>
           <Tab
             heading={<TabHeading><Icon name="md-arrow-round-down" /><Text>Renew Promotions</Text></TabHeading>}

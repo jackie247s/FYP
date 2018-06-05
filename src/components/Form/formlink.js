@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
+import { Icon } from 'native-base';
 
 const FormLink = ({ config }) => {
   const { onPress, buttonText } = config;
@@ -7,7 +8,7 @@ const FormLink = ({ config }) => {
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={onPress}>
-      <Text style={textStyle}>{buttonText}</Text>
+      <Text style={textStyle}><Icon style={{ color: '#fff'}}name='md-attach' /> {buttonText}</Text>
     </TouchableOpacity>
   );
 };

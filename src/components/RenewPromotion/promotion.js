@@ -30,10 +30,10 @@ class Promotion extends Component {
         <Right>
           <Button
             rounded
-            style={{ backgroundColor: '#d9534f' }}
+            style={{ backgroundColor: '#ca3947',width:80 }}
             onPress={() => this.setModalVisible(true)}
           >
-            <Text style={{ color: 'black' }}>Edit</Text>
+            <Text style={{ color: 'white',alignSelf:'center' }}>Edit</Text>
           </Button>
         </Right>
         <EditPromotion
